@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRESTI", "CRESTI\CRESTI.csproj", "{EFFA4C71-8190-4C82-AA36-8E9D3B1CF2EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatServer\ChatServer.csproj", "{503260E8-228C-4770-8440-43319DD19DAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "ChatServer\ChatServer.csproj", "{503260E8-228C-4770-8440-43319DD19DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClient", "ChatClient\ChatClient.csproj", "{880E25E0-64E5-4981-B0C9-ED18029EB4B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "ChatClient\ChatClient.csproj", "{880E25E0-64E5-4981-B0C9-ED18029EB4B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrestiUI", "CrestiUI\CrestiUI.csproj", "{2EFD58B6-5F27-4073-B33A-732BC11A3442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrestiUI", "CrestiUI\CrestiUI.csproj", "{2EFD58B6-5F27-4073-B33A-732BC11A3442}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tcp", "Tcp\Tcp.csproj", "{C875A858-B98B-4181-B2EA-009623F58B4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2EFD58B6-5F27-4073-B33A-732BC11A3442}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EFD58B6-5F27-4073-B33A-732BC11A3442}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EFD58B6-5F27-4073-B33A-732BC11A3442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C875A858-B98B-4181-B2EA-009623F58B4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C875A858-B98B-4181-B2EA-009623F58B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C875A858-B98B-4181-B2EA-009623F58B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C875A858-B98B-4181-B2EA-009623F58B4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

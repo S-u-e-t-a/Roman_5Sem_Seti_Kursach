@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CRESTI\CRESTI.csproj" />
+    <ProjectReference Include="..\Tcp\Tcp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="ui\" />
-    <Folder Include="netTest\" />
   </ItemGroup>
 
 </Project>

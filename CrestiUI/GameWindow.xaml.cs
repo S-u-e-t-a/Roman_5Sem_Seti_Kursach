@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
 using CRESTI;
+
+using Tcp;
 
 namespace CrestiUI
 {
@@ -14,12 +17,12 @@ namespace CrestiUI
     /// </summary>
     public partial class GameWindow : Window
     {
-        private readonly Client _user;
+        private readonly SimpleTcpClient _user;
         private readonly List<Button> cells;
         private readonly Board Game;
 
 
-        public GameWindow(Client user)
+        public GameWindow(SimpleTcpClient user)
         {
             InitializeComponent();
             cells = new List<Button>();
@@ -43,16 +46,13 @@ namespace CrestiUI
             Cell9.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 2); };
 
             _user = user;
-            _user.Notify += getMessage;
+            _user.DelimiterDataReceived += (sender, message) =>
+            {
+                Trace.WriteLine($"Получено сообщение {message.MessageString} в GameWindow.xaml.cs");
+                RequestHandler.ExecuteRequest(Game, new Request(message.MessageString));
+                updateBoard();
+            };
             Game = new Board();
-        }
-
-
-        private void getMessage(object sender, ClientServerMessageEventArgs e)
-        {
-            //Trace.WriteLine($"Пришло сообщение {e.Message}");
-            RequestHandler.ExecuteRequest(Game, new Request(e.Message));
-            updateBoard();
         }
 
 
@@ -93,8 +93,8 @@ namespace CrestiUI
 
         private void cell_click(object sender, EventArgs e, int row, int col)
         {
-            _user.SendMessage($"Mark?row={row}&col={col}");
-            Game.Mark(row, col);
+            _user.WriteLine($"Mark?row={row}&col={col}");
+            //Game.Mark(row, col);
 
             (sender as Button).Content = Game.Cells[row, col].Value;
             if (Game.State == GameState.Finished)

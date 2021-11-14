@@ -2,6 +2,8 @@
 
 using CRESTI;
 
+using Tcp;
+
 namespace CrestiUI
 {
     /// <summary>
@@ -15,16 +17,24 @@ namespace CrestiUI
         public MainWindow()
         {
             InitializeComponent();
-            var r = new Request("print?bool2=true&string3=jopa&int1=1");
 
+            var r = new Request("Mark?row=1&col=1");
+            var p = new Board();
+            //Trace.WriteLine("______________________________________________");
+            //p.printCell();
+            //Trace.WriteLine("==============================================");
             //RequestHandler.ExecuteRequest(p, r);
+            //p.printCell();
+            //Trace.WriteLine("______________________________________________");
         }
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var server = new Server();
-            var user = new Client();
+            var server = new SimpleTcpServer().Start(8910);
+            server.DelimiterDataReceived += (o, message) => { server.BroadcastLine(message.MessageString); };
+            var user = new SimpleTcpClient().Connect("127.0.0.1", 8910);
+
             var gameWindow = new GameWindow(user);
 
             gameWindow.Show();
@@ -33,7 +43,7 @@ namespace CrestiUI
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var user = new Client();
+            var user = new SimpleTcpClient().Connect("127.0.0.1", 8910);
             var gameWindow = new GameWindow(user);
             gameWindow.Show();
         }

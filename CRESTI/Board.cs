@@ -1,4 +1,6 @@
-﻿namespace CRESTI
+﻿using System.Diagnostics;
+
+namespace CRESTI
 {
     public enum GameState
     {
@@ -109,25 +111,23 @@
         }
 
 
-        private void printCell()
+        public void printCell()
         {
             for (var i = 0; i < 3; i++)
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    //Trace.Write(Cells[i, j].Value);
-                    //Trace.Write(" ");
+                    Trace.Write(Cells[i, j].Value);
+                    Trace.Write(" ");
                 }
 
-                //Trace.WriteLine(null);
+                Trace.WriteLine(null);
             }
         }
 
 
         public bool isPlayerWin(Player player, int curRow, int curCol)
         {
-            printCell();
-
             return ((Cells[curRow, 0].Value == player)
                     && (Cells[curRow, 1].Value == player)
                     && (Cells[curRow, 2].Value == player))

@@ -14,13 +14,13 @@ namespace CrestiUI
             }
 
             FuncName = s[0];
-            s = s[1].Split('&');
+            s = s[1].Split('&', StringSplitOptions.RemoveEmptyEntries);
             Args = new Dictionary<string, string>();
             for (var i = 0; i < s.Length; i++)
             {
                 if (s[i] != string.Empty)
                 {
-                    var command = s[i].Split('=');
+                    var command = s[i].Split('=', StringSplitOptions.RemoveEmptyEntries);
                     if (command.Length == 2)
                     {
                         //Args.Add(command[0], command[1]);

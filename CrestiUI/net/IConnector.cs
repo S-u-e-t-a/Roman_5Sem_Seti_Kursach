@@ -1,9 +1,10 @@
-﻿namespace CrestiUI
-{
-    public interface IConnector
-    {
-        public delegate void ClientServerMessageHandler(object sender, ClientServerMessageEventArgs e);
+﻿//namespace CrestiUI
+//{
+//    public interface IConnector
+//    {
+//        public delegate void ClientServerMessageHandler(object sender, ClientServerMessageEventArgs e);
 
-        public event ClientServerMessageHandler Notify;
-    }
-}
+//        public event ClientServerMessageHandler Notify;
+//    }
+//}
+

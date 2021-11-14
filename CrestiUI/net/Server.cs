@@ -1,38 +1,39 @@
-﻿using System;
-using System.Threading;
+﻿//using System;
+//using System.Threading;
 
-namespace CrestiUI
-{
-    internal class Server : IConnector
-    {
-        private static ServerObject server; // сервер
-        private static Thread listenThread; // поток для прослушивания
-
-
-        public Server()
-        {
-            try
-            {
-                server = new ServerObject();
-                server.Notify += send;
-                listenThread = new Thread(server.Listen);
-                listenThread.Start(); //старт потока
-            }
-            catch (Exception ex)
-            {
-                server.Disconnect();
-                //Trace.WriteLine(ex.Message);
-            }
-        }
+//namespace CrestiUI
+//{
+//    internal class Server : IConnector
+//    {
+//        private static ServerObject server; // сервер
+//        private static Thread listenThread; // поток для прослушивания
 
 
-        public event IConnector.ClientServerMessageHandler Notify;
+//        public Server()
+//        {
+//            try
+//            {
+//                server = new ServerObject();
+//                server.Notify += send;
+//                listenThread = new Thread(server.Listen);
+//                listenThread.Start(); //старт потока
+//            }
+//            catch (Exception ex)
+//            {
+//                server.Disconnect();
+//                //Trace.WriteLine(ex.Message);
+//            }
+//        }
 
 
-        private void send(object sender, ClientServerMessageEventArgs e)
-        {
-            //Trace.WriteLine($"Получил сообщение из ServerObject {e.Message}");
-            Notify?.Invoke(sender, e);
-        }
-    }
-}
+//        public event IConnector.ClientServerMessageHandler Notify;
+
+
+//        private void send(object sender, ClientServerMessageEventArgs e)
+//        {
+//            //Trace.WriteLine($"Получил сообщение из ServerObject {e.Message}");
+//            Notify?.Invoke(sender, e);
+//        }
+//    }
+//}
+

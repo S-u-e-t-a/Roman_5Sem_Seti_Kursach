@@ -29,8 +29,14 @@ namespace CrestiUI
             foreach (var parameter in parameters) // для каждого параметра функции
             {
                 var convertMethod = typeof(Convert).GetMethod(typeWithTypeConverter[parameter.ParameterType], new[] {typeof(string)}); // метод ковертации
-                var convertMethod1 = typeof(Convert).GetMethod(nameof(Convert.ToInt32), new[] {typeof(string)});
-                args[parameters.IndexOf(parameter)] = convertMethod.Invoke(typeof(Convert), new object?[] {request.Args[parameter.Name]});
+
+                var nomer_parametra_v_vizove_MARK = parameters.IndexOf(parameter);
+                var tip_converta = typeof(Convert);
+                var imya_parametra = parameter.Name;
+                var znachenie_parametra_v_string = request.Args[imya_parametra];
+                // args[parameters.IndexOf(parameter)] = convertMethod.Invoke(typeof(Convert), new object?[] { request.Args[parameter.Name] });
+
+                args[nomer_parametra_v_vizove_MARK] = convertMethod.Invoke(tip_converta, new object?[] {znachenie_parametra_v_string});
             }
 
             Console.WriteLine(args);
