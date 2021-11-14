@@ -1,0 +1,26 @@
+﻿<Window x:Class="CrestiUI.GameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:CrestiUI="clr-namespace:CrestiUI"
+        xmlns:dataGrid2D="http://gu.se/DataGrid2D"
+        xmlns:local="clr-namespace:CRESTI;assembly=CRESTI"
+        Title="GameWindow" Height="450" Width="800"
+        Closing="GameWindow_OnClosing">
+    <Grid>
+        <UniformGrid Height="300" Width="300" Columns="3" Rows="3">
+            <Button x:Name="Cell1" />
+            <Button x:Name="Cell2"/>
+            <Button x:Name="Cell3"/>
+            <Button x:Name="Cell4"/>
+            <Button x:Name="Cell5"/>
+            <Button x:Name="Cell6"/>
+            <Button x:Name="Cell7"/>
+            <Button x:Name="Cell8"/>
+            <Button x:Name="Cell9"/>
+        </UniformGrid>
+        
+    </Grid>
+</Window>

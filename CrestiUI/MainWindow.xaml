@@ -1,0 +1,13 @@
+﻿<Window x:Class="CrestiUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button Margin="236,126,236,217" Click="Button_Click">Стать хостом</Button>
+        <Button Margin="236,246,236,97" Click="Button_Click_1">Присоединиться к хосту</Button>
+    </Grid>
+</Window>
