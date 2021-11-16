@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 
 using CRESTI;
 
@@ -33,7 +34,29 @@ namespace CrestiUI
         {
             var server = new SimpleTcpServer().Start(8910);
             server.DelimiterDataReceived += (o, message) => { server.BroadcastLine(message.MessageString); };
+            //Trace.WriteLine("--------------------");
+            //foreach (var ipAddress in server.GetIPAddresses())
+            //{
+            //    Trace.WriteLine(ipAddress);
+            //}
+
+            //Trace.WriteLine("--------------------");
+            //foreach (var ipAddress in server.GetListeningIPs())
+            //{
+            //    Trace.WriteLine(ipAddress);
+            //}
+
+            //Trace.WriteLine("--------------------");
             var user = new SimpleTcpClient().Connect("127.0.0.1", 8910);
+            server.ClientConnected += (sender, message) => { Trace.WriteLine("------------подключился чел---------------"); };
+            //foreach (var ipAddress in IPGlobalProperties.GetIPGlobalProperties()
+            //    .GetActiveTcpListeners())
+            //{
+            //    if (ipAddress.Port == 8910)
+            //    {
+            //        Trace.WriteLine($"{ipAddress} {ipAddress.AddressFamily} ");
+            //    }
+            //}
 
             var gameWindow = new GameWindow(user);
 

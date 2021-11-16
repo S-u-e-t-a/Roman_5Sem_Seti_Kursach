@@ -15,14 +15,6 @@ namespace Tcp
         private Thread _rxThread;
 
 
-        public SimpleTcpClient()
-        {
-            StringEncoder = Encoding.UTF8;
-            ReadLoopIntervalMs = 10;
-            Delimiter = 0x13;
-        }
-
-
         public byte Delimiter { get; set; }
         public Encoding StringEncoder { get; set; }
 
@@ -31,6 +23,15 @@ namespace Tcp
         public bool AutoTrimStrings { get; set; }
 
         public TcpClient TcpClient { get; private set; }
+
+
+        public SimpleTcpClient()
+        {
+            StringEncoder = Encoding.UTF8;
+            ReadLoopIntervalMs = 10;
+            Delimiter = 0x13;
+        }
+
 
         public event EventHandler<Message> DelimiterDataReceived;
         public event EventHandler<Message> DataReceived;

@@ -15,13 +15,6 @@ namespace Tcp
         private readonly List<ServerListener> _listeners = new();
 
 
-        public SimpleTcpServer()
-        {
-            Delimiter = 0x13;
-            StringEncoder = Encoding.UTF8;
-        }
-
-
         public byte Delimiter { get; set; }
         public Encoding StringEncoder { get; set; }
         public bool AutoTrimStrings { get; set; }
@@ -35,6 +28,14 @@ namespace Tcp
         {
             get { return _listeners.Sum(l => l.ConnectedClientsCount); }
         }
+
+
+        public SimpleTcpServer()
+        {
+            Delimiter = 0x13;
+            StringEncoder = Encoding.UTF8;
+        }
+
 
         public event EventHandler<TcpClient> ClientConnected;
         public event EventHandler<TcpClient> ClientDisconnected;

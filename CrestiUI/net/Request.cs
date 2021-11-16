@@ -5,6 +5,12 @@ namespace CrestiUI
 {
     internal class Request
     {
+        public string FuncName { get; }
+
+
+        public Dictionary<string, string> Args { get; set; }
+
+
         public Request(string request)
         {
             var s = request.Split('?');
@@ -33,11 +39,5 @@ namespace CrestiUI
                 }
             }
         }
-
-
-        public string FuncName { get; }
-
-
-        public Dictionary<string, string> Args { get; set; }
     }
 }

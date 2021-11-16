@@ -10,6 +10,12 @@ namespace Tcp
     /// </summary>
     public class TcpListenerEx : TcpListener
     {
+        public new bool Active
+        {
+            get { return base.Active; }
+        }
+
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:System.Net.Sockets.TcpListener" /> class with the specified local
         ///     endpoint.
@@ -37,12 +43,6 @@ namespace Tcp
         /// </exception>
         public TcpListenerEx(IPAddress localaddr, int port) : base(localaddr, port)
         {
-        }
-
-
-        public new bool Active
-        {
-            get { return base.Active; }
         }
     }
 }

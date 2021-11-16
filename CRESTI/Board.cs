@@ -14,28 +14,28 @@ namespace CRESTI
         private int countOfMarkedCells;
 
 
+        public GameState State { get; private set; }
+
+
+        public PlayerType Turn { get; private set; }
+
+
+        public Cell[,] Cells { get; private set; }
+
+
+        public PlayerType? Winner { get; private set; }
+
+
         public Board()
         {
             Restart();
         }
 
 
-        public GameState State { get; private set; }
-
-
-        public Player Turn { get; private set; }
-
-
-        public Cell[,] Cells { get; private set; }
-
-
-        public Player? Winner { get; private set; }
-
-
         public void Restart()
         {
             countOfMarkedCells = 0;
-            Turn = Player.X;
+            Turn = PlayerType.X;
             Winner = null;
             Cells = new Cell[boardSize, boardSize];
             cleanBoard();
@@ -82,13 +82,13 @@ namespace CRESTI
 
         private void changeTurn()
         {
-            if (Turn == Player.O)
+            if (Turn == PlayerType.O)
             {
-                Turn = Player.X;
+                Turn = PlayerType.X;
             }
             else
             {
-                Turn = Player.O;
+                Turn = PlayerType.O;
             }
         }
 
@@ -126,22 +126,22 @@ namespace CRESTI
         }
 
 
-        public bool isPlayerWin(Player player, int curRow, int curCol)
+        public bool isPlayerWin(PlayerType playerType, int curRow, int curCol)
         {
-            return ((Cells[curRow, 0].Value == player)
-                    && (Cells[curRow, 1].Value == player)
-                    && (Cells[curRow, 2].Value == player))
-                   || ((Cells[0, curCol].Value == player)
-                       && (Cells[1, curCol].Value == player)
-                       && (Cells[2, curCol].Value == player))
+            return ((Cells[curRow, 0].Value == playerType)
+                    && (Cells[curRow, 1].Value == playerType)
+                    && (Cells[curRow, 2].Value == playerType))
+                   || ((Cells[0, curCol].Value == playerType)
+                       && (Cells[1, curCol].Value == playerType)
+                       && (Cells[2, curCol].Value == playerType))
                    || ((curRow == curCol)
-                       && (Cells[0, 0].Value == player)
-                       && (Cells[1, 1].Value == player)
-                       && (Cells[2, 2].Value == player))
+                       && (Cells[0, 0].Value == playerType)
+                       && (Cells[1, 1].Value == playerType)
+                       && (Cells[2, 2].Value == playerType))
                    || ((curRow + curCol == 2)
-                       && (Cells[0, 2].Value == player)
-                       && (Cells[1, 1].Value == player)
-                       && (Cells[2, 0].Value == player));
+                       && (Cells[0, 2].Value == playerType)
+                       && (Cells[1, 1].Value == playerType)
+                       && (Cells[2, 0].Value == playerType));
         }
     }
 }

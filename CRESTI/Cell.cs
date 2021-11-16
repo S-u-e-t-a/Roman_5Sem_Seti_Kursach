@@ -2,6 +2,6 @@
 {
     public class Cell
     {
-        public Player? Value;
+        public PlayerType? Value;
     }
 }

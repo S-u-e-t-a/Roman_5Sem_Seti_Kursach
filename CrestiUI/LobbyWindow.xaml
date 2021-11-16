@@ -1,36 +1,26 @@
-﻿<Window x:Class="CrestiUI.GameWindow"
+﻿<Window x:Class="CrestiUI.LobbyWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800"
-        Closing="GameWindow_OnClosing">
+        Title="LobbyWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <UniformGrid Height="300" Width="300" Columns="3" Rows="3">
-            <Button x:Name="Cell1" />
-            <Button x:Name="Cell2" />
-            <Button x:Name="Cell3" />
-            <Button x:Name="Cell4" />
-            <Button x:Name="Cell5" />
-            <Button x:Name="Cell6" />
-            <Button x:Name="Cell7" />
-            <Button x:Name="Cell8" />
-            <Button x:Name="Cell9" />
-        </UniformGrid>
+        <Grid Grid.Column="0" />
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+
             </Grid.RowDefinitions>
-            <TextBox> chat</TextBox>
+            <DataGrid />
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <TextBox Text="soobshenie" />
-                <Button> send</Button>
+                <Button> start</Button>
+                <Button> exit</Button>
             </StackPanel>
         </Grid>
     </Grid>

@@ -11,6 +11,24 @@ namespace Tcp
         private readonly byte _writeLineDelimiter;
 
 
+        public byte[] Data { get; }
+
+        public string MessageString
+        {
+            get
+            {
+                if (_autoTrim)
+                {
+                    return _encoder.GetString(Data).Trim();
+                }
+
+                return _encoder.GetString(Data);
+            }
+        }
+
+        public TcpClient TcpClient { get; }
+
+
         internal Message(byte[] data, TcpClient tcpClient, Encoding stringEncoder, byte lineDelimiter)
         {
             Data = data;
@@ -28,24 +46,6 @@ namespace Tcp
             _writeLineDelimiter = lineDelimiter;
             _autoTrim = autoTrim;
         }
-
-
-        public byte[] Data { get; }
-
-        public string MessageString
-        {
-            get
-            {
-                if (_autoTrim)
-                {
-                    return _encoder.GetString(Data).Trim();
-                }
-
-                return _encoder.GetString(Data);
-            }
-        }
-
-        public TcpClient TcpClient { get; }
 
 
         public void Reply(byte[] data)

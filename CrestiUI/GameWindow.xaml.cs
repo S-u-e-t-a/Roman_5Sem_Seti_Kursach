@@ -60,7 +60,10 @@ namespace CrestiUI
         {
             for (var i = 0; i < cells.Count; i++)
             {
-                cells[i].IsEnabled = false;
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action
+                    (
+                        () => cells[i].IsEnabled = false)
+                );
             }
         }
 
@@ -86,7 +89,10 @@ namespace CrestiUI
         {
             for (var i = 0; i < cells.Count; i++)
             {
-                cells[i].IsEnabled = true;
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action
+                    (
+                        () => cells[i].IsEnabled = true)
+                );
             }
         }
 

@@ -8,26 +8,11 @@ namespace Tcp
     internal class ServerListener
     {
         private readonly List<TcpClient> _connectedClients = new();
-        private byte _delimiter = 0x13;
         private readonly List<TcpClient> _disconnectedClients = new();
         private readonly SimpleTcpServer _parent;
         private readonly List<byte> _queuedMsg = new();
+        private byte _delimiter = 0x13;
         private Thread _rxThread;
-
-
-        internal ServerListener(SimpleTcpServer parentServer, IPAddress ipAddress, int port)
-        {
-            QueueStop = false;
-            _parent = parentServer;
-            IPAddress = ipAddress;
-            Port = port;
-            ReadLoopIntervalMs = 10;
-
-            Listener = new TcpListenerEx(ipAddress, port);
-            Listener.Start();
-
-            ThreadPool.QueueUserWorkItem(ListenerLoop);
-        }
 
 
         public int ConnectedClientsCount
@@ -46,6 +31,21 @@ namespace Tcp
         internal int ReadLoopIntervalMs { get; set; }
 
         internal TcpListenerEx Listener { get; }
+
+
+        internal ServerListener(SimpleTcpServer parentServer, IPAddress ipAddress, int port)
+        {
+            QueueStop = false;
+            _parent = parentServer;
+            IPAddress = ipAddress;
+            Port = port;
+            ReadLoopIntervalMs = 10;
+
+            Listener = new TcpListenerEx(ipAddress, port);
+            Listener.Start();
+
+            ThreadPool.QueueUserWorkItem(ListenerLoop);
+        }
 
 
         private void StartThread()

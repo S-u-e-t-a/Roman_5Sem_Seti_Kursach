@@ -1,6 +1,6 @@
 ﻿namespace CRESTI
 {
-    public enum Player
+    public enum PlayerType
     {
         X,
         O
