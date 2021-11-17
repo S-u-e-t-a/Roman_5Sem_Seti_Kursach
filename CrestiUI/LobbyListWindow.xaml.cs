@@ -65,11 +65,10 @@ namespace CrestiUI
         {
             var asker = new SimpleTcpClient();
             asker.Connect(ip.Address.ToString(), port);
-            var ans = asker.WriteLineAndGetReply(new Request("GET", RequestCommands.GetLobbyData, null).ToJsonString(), TimeSpan.FromSeconds(3));
+            var ans = asker.WriteLineAndGetReply(new Request("GET", RequestCommands.GETLobbyData, null).ToJsonString(), TimeSpan.FromSeconds(3));
             if (ans != null)
             {
                 var response = new Response(ans.MessageString);
-                Trace.WriteLine(response.ResponseArgs);
                 if (response.ResponseArgs["IsLobby"] == "true")
                 {
                     var lobbyName = response.ResponseArgs["Name"];

@@ -28,6 +28,7 @@ namespace CrestiUI
             user.ConnectToLobby(lobbyToConnect.Ip, port);
             var lobby = new LocalLobby(user, lobbyToConnect.LobbyName);
 
+
             var lobbyWindow = new LobbyWindow(lobby);
             lobbyWindow.Show();
 

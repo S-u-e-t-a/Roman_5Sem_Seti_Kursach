@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using CrestiUI.net;
 
@@ -15,6 +16,22 @@ namespace CrestiUI.Game
         public UserInLobby(string name) : base(name)
         {
         }
+
+
+        private void NotifyDelimiterDataReceived(object sender, Message message)
+        {
+            DelimiterDataReceived?.Invoke(sender, message);
+        }
+
+
+        private void NotifyDataReceived(object sender, Message message)
+        {
+            DataReceived?.Invoke(sender, message);
+        }
+
+
+        public event EventHandler<Message> DelimiterDataReceived;
+        public event EventHandler<Message> DataReceived;
 
 
         public Message WriteLineAndGetReply(string data, TimeSpan timeout)
@@ -33,12 +50,16 @@ namespace CrestiUI.Game
         {
             serverClient = new SimpleTcpClient();
             serverClient.Connect(ip, port);
+            serverClient.DelimiterDataReceived += DelimiterDataReceived;
+            serverClient.DataReceived += DataReceived;
             var userIp = serverClient.TcpClient.Client.RemoteEndPoint.ToString();
-            var request = new Request("POST", RequestCommands.UserJoinedLobby, new Dictionary<string, string>
+            var request = new Request("POST", RequestCommands.POSTUserJoinedLobby, new Dictionary<string, string>
             {
                 {"UserIp", userIp},
                 {"UserName", Name}
             });
+            Trace.WriteLine($"отправил из UserInLobby {request.ToJsonString()} ");
+            serverClient.WriteLine(request.ToJsonString());
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
@@ -30,7 +29,6 @@ namespace CrestiUI.net
 
         public Response(string jsonString)
         {
-            Trace.WriteLine(jsonString);
             var json = JsonSerializer.Deserialize<Response>(jsonString);
             ResponseArgs = json.ResponseArgs;
         }

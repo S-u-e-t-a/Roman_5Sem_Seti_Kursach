@@ -57,7 +57,6 @@ namespace CRESTI
 
         public void Mark(int row, int col)
         {
-            //Trace.WriteLine(isCellValid(row, col));
             if (isCellValid(row, col) && (State == GameState.InProgress))
             {
                 countOfMarkedCells += 1;

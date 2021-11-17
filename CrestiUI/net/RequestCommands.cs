@@ -2,11 +2,12 @@
 {
     public enum RequestCommands
     {
-        Mark,
-        WriteToChat,
-        GetLobbyData,
-        UserJoinedLobby,
-        GetLobbyUsers,
-        GameStarted
+        POSTUserMark,
+        PostUserWriteToChat,
+        GETLobbyData,
+        POSTUserJoinedLobby,
+        GETLobbyUsers,
+        POSTGameStarted,
+        POSTClientsMustUpdateUsers
     }
 }

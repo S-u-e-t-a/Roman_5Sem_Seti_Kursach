@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -48,7 +47,6 @@ namespace CrestiUI
             _user = user;
             _user.DelimiterDataReceived += (sender, message) =>
             {
-                Trace.WriteLine($"Получено сообщение {message.MessageString} в GameWindow.xaml.cs");
                 RequestHandler.ExecuteRequest(Game, new Request(message.MessageString));
                 updateBoard();
             };
@@ -74,12 +72,10 @@ namespace CrestiUI
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    //Trace.WriteLine($"Меняю кнопку {i} {j}");
                     Dispatcher.Invoke(
                         DispatcherPriority.Normal,
                         new Action(() => cells[(i * 3) + j].Content = Game.Cells[i, j].Value)
                     );
-                    //Dispatcher.BeginInvoke(new ThreadStart(delegate { cells[(i * 3) + j].Content = Game.Cells[i, j].Value; }));
                 }
             }
         }
