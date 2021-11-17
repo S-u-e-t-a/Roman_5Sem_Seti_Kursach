@@ -24,6 +24,7 @@ namespace CrestiUI
             var host = new Host(userName);
             var lobby = new Lobby(lobbyName, host, port);
             var lobbyWindow = new LobbyWindow(lobby);
+
             lobbyWindow.Show();
             Close();
         }
