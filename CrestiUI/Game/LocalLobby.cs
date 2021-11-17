@@ -37,7 +37,7 @@ namespace CrestiUI.Game
         protected void getUsers()
         {
             var request = new Request("GET", RequestCommands.GetLobbyUsers, null).ToJsonString();
-            var ans = _user.WriteLineAndGetReply(request, TimeSpan.Zero);
+            var ans = _user.WriteLineAndGetReply(request, TimeSpan.FromSeconds(3));
             var response = new Response(ans.MessageString);
             users = JsonSerializer.Deserialize<List<LocalUser>>(response.ResponseArgs["Users"]);
         }

@@ -101,6 +101,10 @@ namespace CrestiUI
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
+            var lobby = LobbyDataGrid.SelectedItem as LobbyInLobbyList;
+            var joinLobbyWindow = new JoinLobbyWindow(lobby);
+            joinLobbyWindow.Show();
+            Close();
         }
 
 

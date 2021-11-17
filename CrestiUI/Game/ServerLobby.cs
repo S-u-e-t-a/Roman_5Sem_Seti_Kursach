@@ -53,7 +53,7 @@ namespace CrestiUI.Game
                     {
                         {"Users", JsonSerializer.Serialize(users)}
                     });
-                    message.ReplyLine(response.ToJsonString());
+                    message.Reply(response.ToJsonString());
                 }
             }
             else if (request.RequestType == "POST")

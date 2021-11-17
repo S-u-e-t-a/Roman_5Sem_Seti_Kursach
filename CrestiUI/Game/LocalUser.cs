@@ -2,8 +2,13 @@
 {
     public class LocalUser
     {
-        public string Name { get; }
-        public string Ip { get; }
+        public string Name { get; set; }
+        public string Ip { get; set; }
+
+
+        public LocalUser()
+        {
+        }
 
 
         public LocalUser(string name, string ip)
