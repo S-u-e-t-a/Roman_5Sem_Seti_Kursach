@@ -1,42 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+
+using CrestiUI.net;
 
 namespace CrestiUI
 {
     public class Request
     {
-        public string RequestType { get; private set; } //POST отправляет запрос на сервер, GET - получает данные с сервера
-        public string FuncName { get; private set; }
+        public string RequestType { get; set; } //POST отправляет запрос на сервер, GET - получает данные с сервера
+        public string FuncName { get; set; }
 
-        public Dictionary<string, string> Args { get; private set; }
-        public Request(string requestType,string funcName, Dictionary<string,string> args)
+        public Dictionary<string, string> Args { get; set; }
+
+
+        public Request()
+        {
+        }
+
+
+        public Request(string requestType, RequestCommands command, Dictionary<string, string> args)
         {
             RequestType = requestType;
-            FuncName = funcName;
+            FuncName = command.ToString();
             Args = args;
         }
+
 
         public Request(byte[] data)
         {
             var json = JsonSerializer.Deserialize<Request>(data);
-            this.RequestType = json.RequestType;
-            this.FuncName = json.FuncName;
-            this.Args = json.Args;
+            RequestType = json.RequestType;
+            FuncName = json.FuncName;
+            Args = json.Args;
         }
+
 
         public Request(string jsonString)
         {
+            jsonString.Replace("\u0013", string.Empty);
             var json = JsonSerializer.Deserialize<Request>(jsonString);
-            this.RequestType = json.RequestType;
-            this.FuncName = json.FuncName;
-            this.Args = json.Args;
+            RequestType = json.RequestType;
+            FuncName = json.FuncName;
+            Args = json.Args;
         }
+
+
         public byte[] ToJsonBytes()
         {
-            string json = JsonSerializer.Serialize<Request>(this);
+            var json = JsonSerializer.Serialize(this);
 
             return Encoding.UTF8.GetBytes(json);
         }
@@ -44,7 +56,7 @@ namespace CrestiUI
 
         public string ToJsonString()
         {
-            return JsonSerializer.Serialize<Request>(this);
+            return JsonSerializer.Serialize(this);
         }
     }
 }

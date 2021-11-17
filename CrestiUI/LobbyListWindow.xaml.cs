@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -19,12 +20,17 @@ namespace CrestiUI
     /// </summary>
     public partial class LobbyListWindow : Window
     {
-        private List<Lobby> lobbyList;
+        public List<LobbyInLobbyList> LobbyList { get; set; }
 
 
         public LobbyListWindow()
         {
             InitializeComponent();
+            updateLobbyList();
+            foreach (var lobby in LobbyList)
+            {
+                Trace.WriteLine(lobby.Ip);
+            }
         }
 
 
@@ -49,6 +55,9 @@ namespace CrestiUI
                     lobbies.Add(lobbyData);
                 }
             }
+
+            LobbyList = lobbies;
+            LobbyDataGrid.ItemsSource = LobbyList;
         }
 
 
@@ -56,29 +65,50 @@ namespace CrestiUI
         {
             var asker = new SimpleTcpClient();
             asker.Connect(ip.Address.ToString(), port);
-            var ans = asker.WriteLineAndGetReply(new Request("GET", RequestCommands.GetLobbyData.ToString(), null).ToJsonString(), TimeSpan.Zero);
-            var response = new Response(ans.MessageString);
-            if (response.ResponseArgs["IsLobby"] == "true")
+            var ans = asker.WriteLineAndGetReply(new Request("GET", RequestCommands.GetLobbyData, null).ToJsonString(), TimeSpan.FromSeconds(3));
+            if (ans != null)
             {
-                var lobbyName = response.ResponseArgs["Name"];
-                var lobbyIp = response.ResponseArgs["Ip"];
-                var lobbyCountOfPlayers = Convert.ToInt32(response.ResponseArgs["CountOfPlayers"]);
-                Lobby.LobbyState lobbyState;
-                Enum.TryParse(response.ResponseArgs["State"], out lobbyState);
+                var response = new Response(ans.MessageString);
+                Trace.WriteLine(response.ResponseArgs);
+                if (response.ResponseArgs["IsLobby"] == "true")
+                {
+                    var lobbyName = response.ResponseArgs["Name"];
+                    var lobbyIp = response.ResponseArgs["Ip"];
+                    var lobbyCountOfPlayers = Convert.ToInt32(response.ResponseArgs["CountOfPlayers"]);
+                    LobbyState lobbyState;
+                    Enum.TryParse(response.ResponseArgs["State"], out lobbyState);
+
+                    asker.Disconnect();
+
+                    return new LobbyInLobbyList(lobbyName, lobbyIp, lobbyCountOfPlayers, lobbyState);
+                }
 
                 asker.Disconnect();
-
-                return new LobbyInLobbyList(lobbyName, lobbyIp, lobbyCountOfPlayers, lobbyState);
             }
-
-            asker.Disconnect();
 
             return null;
         }
 
 
-        public void ConnectToLobby()
+        public void ConnectToLobby(LobbyInLobbyList lobby)
         {
+            var joinLobbyWindow = new JoinLobbyWindow(lobby);
+            joinLobbyWindow.Show();
+
+            Close();
+        }
+
+
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            var createLobbyWindow = new CreateLobbyWindow();
+            createLobbyWindow.Show();
+            Close();
         }
     }
 }

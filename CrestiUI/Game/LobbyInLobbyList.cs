@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrestiUI.Game
+﻿namespace CrestiUI.Game
 {
-    class LobbyInLobbyList // todo RENAME
+    public enum LobbyState
     {
-        public string LobbyName { get; }
-        public string Ip { get;}
-        public int PlayerCount { get; }
+        SearchingForPlayers,
+        GameStarted
+    }
 
-        public Lobby.LobbyState LobbyState { get; }
+    public class LobbyInLobbyList // todo RENAME
+    {
+        public string LobbyName { get; protected set; }
+        public string Ip { get; }
+        public virtual int PlayerCount { get; }
+
+        public LobbyState LobbyState { get; protected set; }
 
 
-        public LobbyInLobbyList(string lobbyName, string ip, int playerCount, Lobby.LobbyState lobbyState)
+        public LobbyInLobbyList(string lobbyName, string ip, int playerCount, LobbyState lobbyState)
         {
             LobbyName = lobbyName;
             Ip = ip;
             PlayerCount = playerCount;
             LobbyState = lobbyState;
+        }
+
+
+        public LobbyInLobbyList()
+        {
         }
     }
 }

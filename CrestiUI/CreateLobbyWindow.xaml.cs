@@ -22,7 +22,7 @@ namespace CrestiUI
             var userName = UserNameTextBox.Text;
             var port = Settings.Default.DefaultPort;
             var host = new Host(userName);
-            var lobby = new Lobby(lobbyName, host, port);
+            var lobby = new ServerLobby(lobbyName, host, port);
             var lobbyWindow = new LobbyWindow(lobby);
 
             lobbyWindow.Show();

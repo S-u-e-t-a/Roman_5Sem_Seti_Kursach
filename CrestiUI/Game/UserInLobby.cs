@@ -1,26 +1,44 @@
-﻿using CrestiUI.Properties;
+﻿using System;
+using System.Collections.Generic;
+
+using CrestiUI.net;
 
 using Tcp;
 
 namespace CrestiUI.Game
 {
-    public class UserInLobby
+    public class UserInLobby : LocalUser
     {
-        private readonly SimpleTcpClient serverClient;
-        public string Name;
+        private SimpleTcpClient serverClient;
 
 
-        public UserInLobby(string name)
+        public UserInLobby(string name) : base(name)
         {
-            Name = name;
-            serverClient = new SimpleTcpClient();
         }
 
 
-        public void ConnectToLobby(Lobby lobby)
+        public Message WriteLineAndGetReply(string data, TimeSpan timeout)
         {
-            var port = Settings.Default.DefaultPort;
-            serverClient.Connect(lobby.getIp(), port);
+            return serverClient.WriteLineAndGetReply(data, timeout);
+        }
+
+
+        public void WriteLine(string data)
+        {
+            serverClient.WriteLine(data);
+        }
+
+
+        public void ConnectToLobby(string ip, int port)
+        {
+            serverClient = new SimpleTcpClient();
+            serverClient.Connect(ip, port);
+            var userIp = serverClient.TcpClient.Client.RemoteEndPoint.ToString();
+            var request = new Request("POST", RequestCommands.UserJoinedLobby, new Dictionary<string, string>
+            {
+                {"UserIp", userIp},
+                {"UserName", Name}
+            });
         }
     }
 }

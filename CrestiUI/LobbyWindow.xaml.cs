@@ -9,13 +9,13 @@ namespace CrestiUI
     /// </summary>
     public partial class LobbyWindow : Window
     {
-        private Lobby lobby;
+        private LocalLobby _serverLobby;
 
 
-        public LobbyWindow(Lobby lobby)
+        public LobbyWindow(LocalLobby serverLobby)
         {
             InitializeComponent();
-            this.lobby = lobby;
+            _serverLobby = serverLobby;
         }
     }
 }

@@ -18,10 +18,10 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0"> Имя пользователя</Label>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Имя пользователя" />
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="Имя пользователя" />
         <Label Grid.Row="2" Grid.Column="0">пароль</Label>
         <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Пароль" />
-        <Button Grid.Row="4" Grid.Column="0">присоединиться</Button>
+        <Button Grid.Row="4" Grid.Column="0" Click="Button_Click">присоединиться</Button>
         <Button Grid.Row="4" Grid.Column="1">отмена</Button>
     </Grid>
 </Window>

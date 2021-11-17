@@ -7,7 +7,6 @@
 
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Margin="236,126,236,217" Click="Button_Click">Стать хостом</Button>
-        <Button Margin="236,246,236,97" Click="Button_Click_1">Присоединиться к хосту</Button>
+        <Button Margin="236,182,236,161" Click="Button_Click">Перейти к списку серверов</Button>
     </Grid>
 </Window>
