@@ -9,7 +9,7 @@ namespace CrestiUI.Game
 {
     public class UserInLobby : LocalUser
     {
-        public SimpleTcpClient serverClient;
+        public SimpleTcpClient tcpClient;
 
 
         public UserInLobby(string name) : base(name)
@@ -47,16 +47,16 @@ namespace CrestiUI.Game
 
         public void ConnectToLobby(string ip, int port)
         {
-            serverClient = new SimpleTcpClient();
-            serverClient.Connect(ip, port);
-            var userIp = serverClient.TcpClient.Client.RemoteEndPoint.ToString();
+            tcpClient = new SimpleTcpClient();
+            tcpClient.Connect(ip, port);
+            var userIp = tcpClient.TcpClient.Client.RemoteEndPoint.ToString();
             var request = new Request("POST", RequestCommands.POSTUserJoinedLobby, new Dictionary<string, string>
             {
                 {"UserIp", userIp},
                 {"UserName", Name}
             });
             Trace.WriteLine($"отправил из UserInLobby {request.ToJsonString()} ");
-            serverClient.WriteLine(request.ToJsonString());
+            tcpClient.WriteLine(request.ToJsonString());
         }
     }
 }

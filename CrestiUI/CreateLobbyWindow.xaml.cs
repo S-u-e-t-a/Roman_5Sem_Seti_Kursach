@@ -21,8 +21,7 @@ namespace CrestiUI
             var lobbyName = LobbyNameTextBox.Text;
             var userName = UserNameTextBox.Text;
             var port = Settings.Default.DefaultPort;
-            var host = new Host(userName);
-            var lobby = new ServerLobby(lobbyName, host, port);
+            var lobby = new ServerLobby(userName, lobbyName, port);
             var lobbyWindow = new LobbyWindow(lobby);
 
             lobbyWindow.Show();

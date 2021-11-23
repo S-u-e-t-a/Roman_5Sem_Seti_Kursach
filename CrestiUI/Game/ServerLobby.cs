@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text.Json;
 
 using CrestiUI.net;
@@ -14,14 +15,16 @@ namespace CrestiUI.Game
         private readonly SimpleTcpServer server;
 
 
-        public ServerLobby(string lobbyName, UserInLobby host, int port)
+        public ServerLobby(string userName, string lobbyName, int port)
         {
             LobbyName = lobbyName;
-            users = new List<LocalUser>();
-            users.Add(host);
             server = new SimpleTcpServer();
-            server.Start(port);
+            server.Start(port, AddressFamily.InterNetwork);
+            users = new List<LocalUser>();
+            _user = new UserInLobby(userName);
+            _user.ConnectToLobby("localhost", port);
             server.DelimiterDataReceived += processMessage;
+
             LobbyState = LobbyState.SearchingForPlayers;
         }
 
@@ -80,6 +83,7 @@ namespace CrestiUI.Game
                 {
                     var response = new Response("StartGame", null);
                     server.BroadcastLine(response.ToJsonString());
+                    LobbyState = LobbyState.GameStarted;
                 }
             }
         }
