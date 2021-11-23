@@ -63,12 +63,13 @@ namespace CrestiUI.Game
                     var userName = request.Args["UserName"];
                     var ip = request.Args["UserIp"];
                     users.Add(new LocalUser(userName, ip));
+                    UsersUpdatedHandler(this, null);
                     var response = new Response("UserList", new Dictionary<string, string>
                     {
                         {"Users", JsonSerializer.Serialize(users)}
                     });
                     server.BroadcastLine(response.ToJsonString());
-                    UsersUpdatedHandler(this, null);
+                    
                 }
 
                 if (request.FuncName == RequestCommands.POSTClientsMustUpdateUsers.ToString())
@@ -77,13 +78,6 @@ namespace CrestiUI.Game
                 }
             }
         }
-
-
-        //public void AddUser(UserInLobby user)
-        //{
-        //    user.ConnectToLobby(this);
-        //    users.Add(user);
-        //}
 
 
         public string getIp()

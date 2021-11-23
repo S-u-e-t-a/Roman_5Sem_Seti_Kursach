@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Threading;
+﻿using System.Windows;
 
 using CrestiUI.Game;
 
@@ -12,29 +9,24 @@ namespace CrestiUI
     /// </summary>
     public partial class LobbyWindow : Window
     {
-        private readonly LocalLobby _serverLobby;
+        private readonly LocalLobby _lobby;
 
 
-        public LobbyWindow(LocalLobby serverLobby)
+        public LobbyWindow(LocalLobby lobby)
         {
+            DataContext = new LobbyWindowVM(lobby);
             InitializeComponent();
-            _serverLobby = serverLobby;
-            updateUserGrid(null, null);
-            _serverLobby.UsersUpdatedHandler += (sender, args) => { updateUserGrid(sender, args); };
         }
 
 
-        private void updateUserGrid(object sender, EventArgs e)
+        private void becomeX_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action
-                (
-                    () =>
-                    {
-                        userGrid.ItemsSource = null;
-                        userGrid.ItemsSource = _serverLobby.users.ToList();
-                    }
-                )
-            );
+            // _lobby.setPlayer(_lobby.u);
+        }
+
+
+        private void becomeY_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
