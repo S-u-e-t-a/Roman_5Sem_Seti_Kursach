@@ -12,6 +12,7 @@ namespace CrestiUI.Game
     public class LocalLobby : LobbyInLobbyList
     {
         private readonly UserInLobby _user;
+        public EventHandler GameStarted;
 
         public List<LocalUser> users;
 
@@ -39,11 +40,6 @@ namespace CrestiUI.Game
         }
 
 
-        protected LocalLobby()
-        {
-        }
-
-
         private void processMessage(object sender, Message message)
         {
             Trace.WriteLine($"Пришло в LocalLobby {message.MessageString} ");
@@ -54,6 +50,18 @@ namespace CrestiUI.Game
                 users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
                 UsersUpdatedHandler(this, null);
             }
+
+            if (response.Name == "StartGame")
+            {
+                GameStarted(this, null);
+            }
+        }
+
+
+        public void SendToServerGameStart()
+        {
+            var request = new Request("POST", RequestCommands.POSTGameStart, null);
+            _user.serverClient.WriteLine(request.ToJsonString());
         }
 
 

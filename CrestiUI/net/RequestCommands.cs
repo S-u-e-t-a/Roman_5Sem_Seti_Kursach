@@ -7,7 +7,7 @@
         GETLobbyData,
         POSTUserJoinedLobby,
         GETLobbyUsers,
-        POSTGameStarted,
+        POSTGameStart,
         POSTClientsMustUpdateUsers,
         POSTSendLobbyUsers
     }

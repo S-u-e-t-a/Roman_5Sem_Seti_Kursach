@@ -7,6 +7,8 @@ using System.Windows.Threading;
 
 using CRESTI;
 
+using CrestiUI.Game;
+
 using Tcp;
 
 namespace CrestiUI
@@ -21,7 +23,7 @@ namespace CrestiUI
         private readonly Board Game;
 
 
-        public GameWindow(SimpleTcpClient user)
+        public GameWindow(LocalLobby lobby)
         {
             InitializeComponent();
             cells = new List<Button>();
@@ -43,13 +45,6 @@ namespace CrestiUI
             Cell7.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 0); };
             Cell8.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 1); };
             Cell9.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 2); };
-
-            _user = user;
-            _user.DelimiterDataReceived += (sender, message) =>
-            {
-                RequestHandler.ExecuteRequest(Game, new Request(message.MessageString));
-                updateBoard();
-            };
             Game = new Board();
         }
 

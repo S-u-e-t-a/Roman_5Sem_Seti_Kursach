@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 using CrestiUI.Game;
 
@@ -10,15 +9,17 @@ namespace CrestiUI
 {
     public class LobbyWindowVM : ViewModelBase
     {
-        private readonly LocalLobby _localLobby;
+        public readonly LocalLobby LocalLobby;
+
+        private RelayCommand _startGame;
 
 
         public ObservableCollection<LocalUser> Users
         {
-            get { return new(_localLobby.users); }
+            get { return new(LocalLobby.users); }
             set
             {
-                _localLobby.users = new List<LocalUser>(value);
+                LocalLobby.users = new List<LocalUser>(value);
                 OnPropertyChanged();
             }
         }
@@ -26,38 +27,34 @@ namespace CrestiUI
 
         public UserInLobby Xplayer
         {
-            get { return _localLobby.Xplayer; }
+            get { return LocalLobby.Xplayer; }
             set
             {
-                _localLobby.Xplayer = value;
+                LocalLobby.Xplayer = value;
                 OnPropertyChanged();
             }
         }
 
         public UserInLobby Yplayer
         {
-            get { return _localLobby.Yplayer; }
+            get { return LocalLobby.Yplayer; }
             set
             {
-                _localLobby.Yplayer = value;
+                LocalLobby.Yplayer = value;
                 OnPropertyChanged();
             }
+        }
+
+        public RelayCommand StartGame
+        {
+            get { return _startGame ?? (_startGame = new RelayCommand(o => { LocalLobby.SendToServerGameStart(); })); }
         }
 
 
         public LobbyWindowVM(LocalLobby lobby)
         {
-            _localLobby = lobby;
-            _localLobby.UsersUpdatedHandler += (sender, args) => { Users = new ObservableCollection<LocalUser>(_localLobby.users); };
-        }
-
-
-        private void printUserList(List<LocalUser> users)
-        {
-            foreach (var user in users)
-            {
-                Trace.WriteLine(user.Name);
-            }
+            LocalLobby = lobby;
+            LocalLobby.UsersUpdatedHandler += (sender, args) => { Users = new ObservableCollection<LocalUser>(LocalLobby.users); };
         }
     }
 }

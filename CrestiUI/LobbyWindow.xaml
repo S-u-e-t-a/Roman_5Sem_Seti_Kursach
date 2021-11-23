@@ -33,7 +33,7 @@
             </Grid.RowDefinitions>
             <DataGrid x:Name="userGrid" ItemsSource="{Binding Users}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button Width="164" Height="116">start</Button>
+                <Button x:Name="StartButton" Width="164" Height="116" Command="{ Binding StartGame}" >start</Button>
                 <Button Width="209" Height="115">exit</Button>
             </StackPanel>
         </Grid>

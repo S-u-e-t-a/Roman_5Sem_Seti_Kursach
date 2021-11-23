@@ -14,7 +14,7 @@ namespace CrestiUI.Game
         private readonly SimpleTcpServer server;
 
 
-        public ServerLobby(string lobbyName, Host host, int port)
+        public ServerLobby(string lobbyName, UserInLobby host, int port)
         {
             LobbyName = lobbyName;
             users = new List<LocalUser>();
@@ -69,12 +69,17 @@ namespace CrestiUI.Game
                         {"Users", JsonSerializer.Serialize(users)}
                     });
                     server.BroadcastLine(response.ToJsonString());
-                    
                 }
 
                 if (request.FuncName == RequestCommands.POSTClientsMustUpdateUsers.ToString())
                 {
                     server.BroadcastLine(request.ToJsonString());
+                }
+
+                if (request.FuncName == RequestCommands.POSTGameStart.ToString())
+                {
+                    var response = new Response("StartGame", null);
+                    server.BroadcastLine(response.ToJsonString());
                 }
             }
         }
