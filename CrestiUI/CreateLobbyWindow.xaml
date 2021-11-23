@@ -21,14 +21,14 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Имя лобби</Label>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="LobbyNameTextBox" Text="Имя лобби" />
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="LobbyNameTextBox" Text="imya lobbi" />
 
         <Label Grid.Row="2" Grid.Column="0">Имя пользователя</Label>
-        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="Имя пользователя" />
+        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="imya polzovatelya" />
 
         <CheckBox Grid.Row="4" Grid.Column="0" />
         <Label Grid.Row="4" Grid.Column="1">Пароль</Label>
-        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="PasswordTextBox" Text="Пароль" />
+        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="PasswordTextBox" Text="parol" />
 
         <Button Grid.Row="6" Grid.Column="0" Click="CreateLobby_Click">создать</Button>
         <Button Grid.Row="6" Grid.Column="1">отмена</Button>

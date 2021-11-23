@@ -29,10 +29,14 @@ namespace CrestiUI.Game
 
         public LocalLobby(UserInLobby user, string lobbyName)
         {
+            users = new List<LocalUser>();
             _user = user;
-            _user.DelimiterDataReceived += processMessage;
+            users.Add(_user);
+            //_user.serverClient.DataReceived += processMessage;
+            _user.serverClient.DelimiterDataReceived += processMessage;
             LobbyName = lobbyName;
-            getUsers();
+            //var request = new Request("POST", RequestCommands.POSTClientsMustUpdateUsers, null);
+            //_user.serverClient.WriteLine(request.ToJsonString());
         }
 
 
@@ -44,48 +48,12 @@ namespace CrestiUI.Game
         private void processMessage(object sender, Message message)
         {
             Trace.WriteLine($"Пришло в LocalLobby {message.MessageString} ");
-            var request = new Request(message.MessageString);
-            if (request.RequestType == "GET")
-            {
-                //if (request.FuncName == RequestCommands.GETLobbyData.ToString())
-                //{
-                //    Trace.WriteLine(RequestCommands.GETLobbyData.ToString());
-                //    var response = new Response(new Dictionary<string, string>
-                //    {
-                //        {"IsLobby", "true"},
-                //        {"State", LobbyState.ToString()},
-                //        {"Ip", getIp()},
-                //        {"Name", LobbyName},
-                //        {"CountOfPlayers", PlayerCount.ToString()}
-                //    });
-                //    message.Reply(response.ToJsonString());
-                //}
+            var response = new Response(message.MessageString);
 
-                //if (request.FuncName == RequestCommands.GETLobbyUsers.ToString())
-                //{
-                //    var response = new Response(new Dictionary<string, string>
-                //    {
-                //        {"Users", JsonSerializer.Serialize(users)}
-                //    });
-                //    message.Reply(response.ToJsonString());
-                //}
-            }
-            else if (request.RequestType == "POST")
+            if (response.Name == "UserList")
             {
-                Trace.WriteLine("Пришел post запрос");
-                if (request.FuncName == RequestCommands.POSTUserJoinedLobby.ToString())
-                {
-                    var userName = request.Args["UserName"];
-                    var ip = request.Args["UserIp"];
-                    users.Add(new LocalUser(userName, ip));
-                    UsersUpdatedHandler(null, null);
-                }
-
-                if (request.FuncName == RequestCommands.POSTClientsMustUpdateUsers.ToString())
-                {
-                    getUsers();
-                    UsersUpdatedHandler(null, null);
-                }
+                users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
+                UsersUpdatedHandler(this, null);
             }
         }
 
@@ -93,9 +61,9 @@ namespace CrestiUI.Game
         protected void getUsers()
         {
             var request = new Request("GET", RequestCommands.GETLobbyUsers, null).ToJsonString();
-            var ans = _user.WriteLineAndGetReply(request, TimeSpan.FromSeconds(3));
+            var ans = _user.serverClient.WriteLineAndGetReply(request, TimeSpan.FromSeconds(10));
             var response = new Response(ans.MessageString);
-            users = JsonSerializer.Deserialize<List<LocalUser>>(response.ResponseArgs["Users"]);
+            users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
         }
 
 

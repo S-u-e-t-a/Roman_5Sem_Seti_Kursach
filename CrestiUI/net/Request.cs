@@ -38,7 +38,6 @@ namespace CrestiUI
 
         public Request(string jsonString)
         {
-            jsonString.Replace("\u0013", string.Empty);
             var json = JsonSerializer.Deserialize<Request>(jsonString);
             RequestType = json.RequestType;
             FuncName = json.FuncName;

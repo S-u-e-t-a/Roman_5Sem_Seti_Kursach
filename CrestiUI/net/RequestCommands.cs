@@ -8,6 +8,7 @@
         POSTUserJoinedLobby,
         GETLobbyUsers,
         POSTGameStarted,
-        POSTClientsMustUpdateUsers
+        POSTClientsMustUpdateUsers,
+        POSTSendLobbyUsers
     }
 }

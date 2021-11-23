@@ -69,13 +69,13 @@ namespace CrestiUI
             if (ans != null)
             {
                 var response = new Response(ans.MessageString);
-                if (response.ResponseArgs["IsLobby"] == "true")
+                if (response.Args["IsLobby"] == "true")
                 {
-                    var lobbyName = response.ResponseArgs["Name"];
-                    var lobbyIp = response.ResponseArgs["Ip"];
-                    var lobbyCountOfPlayers = Convert.ToInt32(response.ResponseArgs["CountOfPlayers"]);
+                    var lobbyName = response.Args["Name"];
+                    var lobbyIp = response.Args["Ip"];
+                    var lobbyCountOfPlayers = Convert.ToInt32(response.Args["CountOfPlayers"]);
                     LobbyState lobbyState;
-                    Enum.TryParse(response.ResponseArgs["State"], out lobbyState);
+                    Enum.TryParse(response.Args["State"], out lobbyState);
 
                     asker.Disconnect();
 

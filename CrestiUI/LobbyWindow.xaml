@@ -23,8 +23,8 @@
             </Grid.RowDefinitions>
             <DataGrid />
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button> start</Button>
-                <Button> exit</Button>
+                <Button Width="164" Height="116"> start</Button>
+                <Button Width="209" Height="115"> exit</Button>
             </StackPanel>
         </Grid>
     </Grid>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 using CrestiUI.Game;
 
@@ -24,7 +26,15 @@ namespace CrestiUI
 
         private void updateUserGrid(object sender, EventArgs e)
         {
-            userGrid.ItemsSource = _serverLobby.users;
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action
+                (
+                    () =>
+                    {
+                        userGrid.ItemsSource = null;
+                        userGrid.ItemsSource = _serverLobby.users.ToList();
+                    }
+                )
+            );
         }
     }
 }

@@ -6,7 +6,8 @@ namespace CrestiUI.net
 {
     internal class Response
     {
-        public Dictionary<string, string> ResponseArgs { get; set; }
+        public string Name { get; set; }
+        public Dictionary<string, string> Args { get; set; }
 
 
         public Response()
@@ -14,29 +15,32 @@ namespace CrestiUI.net
         }
 
 
-        public Response(Dictionary<string, string> args) // todo исправить констурктор, так как нарушаются права доступа
+        public Response(string name, Dictionary<string, string> args) // todo исправить констурктор, так как нарушаются права доступа
         {
-            ResponseArgs = args;
+            Args = args;
+            Name = name;
         }
 
 
         public Response(byte[] data)
         {
-            var json = JsonSerializer.Deserialize<Request>(data);
-            ResponseArgs = json.Args;
+            var json = JsonSerializer.Deserialize<Response>(data);
+            Name = json.Name;
+            Args = json.Args;
         }
 
 
         public Response(string jsonString)
         {
             var json = JsonSerializer.Deserialize<Response>(jsonString);
-            ResponseArgs = json.ResponseArgs;
+            Name = json.Name;
+            Args = json.Args;
         }
 
 
         public byte[] ToJsonBytes()
         {
-            var json = JsonSerializer.Serialize(this);
+            var json = ToJsonString();
 
             return Encoding.UTF8.GetBytes(json);
         }

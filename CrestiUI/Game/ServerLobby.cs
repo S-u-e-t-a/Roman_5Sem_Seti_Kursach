@@ -34,7 +34,7 @@ namespace CrestiUI.Game
             {
                 if (request.FuncName == RequestCommands.GETLobbyData.ToString())
                 {
-                    var response = new Response(new Dictionary<string, string>
+                    var response = new Response("LobbyData", new Dictionary<string, string>
                     {
                         {"IsLobby", "true"},
                         {"State", LobbyState.ToString()},
@@ -47,10 +47,11 @@ namespace CrestiUI.Game
 
                 if (request.FuncName == RequestCommands.GETLobbyUsers.ToString())
                 {
-                    var response = new Response(new Dictionary<string, string>
+                    var response = new Response("UserList", new Dictionary<string, string>
                     {
                         {"Users", JsonSerializer.Serialize(users)}
                     });
+                    message.ReplyLine(response.ToJsonString());
                     message.Reply(response.ToJsonString());
                 }
             }
@@ -62,9 +63,17 @@ namespace CrestiUI.Game
                     var userName = request.Args["UserName"];
                     var ip = request.Args["UserIp"];
                     users.Add(new LocalUser(userName, ip));
-                    server.Broadcast(request.ToJsonString());
-                    //var req = new Request("POST", RequestCommands.POSTClientsMustUpdateUsers, null);
-                    //server.BroadcastLine(req.ToJsonString());
+                    var response = new Response("UserList", new Dictionary<string, string>
+                    {
+                        {"Users", JsonSerializer.Serialize(users)}
+                    });
+                    server.BroadcastLine(response.ToJsonString());
+                    UsersUpdatedHandler(this, null);
+                }
+
+                if (request.FuncName == RequestCommands.POSTClientsMustUpdateUsers.ToString())
+                {
+                    server.BroadcastLine(request.ToJsonString());
                 }
             }
         }
