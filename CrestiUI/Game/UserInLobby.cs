@@ -14,6 +14,7 @@ namespace CrestiUI.Game
 
         public UserInLobby(string name) : base(name)
         {
+            tcpClient = new SimpleTcpClient();
         }
 
 
@@ -47,7 +48,6 @@ namespace CrestiUI.Game
 
         public void ConnectToLobby(string ip, int port)
         {
-            tcpClient = new SimpleTcpClient();
             tcpClient.Connect(ip, port);
             var userIp = tcpClient.TcpClient.Client.RemoteEndPoint.ToString();
             var request = new Request("POST", RequestCommands.POSTUserJoinedLobby, new Dictionary<string, string>

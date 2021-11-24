@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -53,9 +52,9 @@ namespace CrestiUI
         {
             for (var i = 0; i < cells.Count; i++)
             {
-                Dispatcher.Invoke(DispatcherPriority.Normal, new Action
-                    (
-                        () => cells[i].IsEnabled = false)
+                Dispatcher.Invoke
+                (
+                    () => cells[i].IsEnabled = false
                 );
             }
         }
@@ -108,9 +107,9 @@ namespace CrestiUI
         }
 
 
-        private void GameWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            _user.Disconnect();
-        }
+        //private void GameWindow_OnClosing(object sender, CancelEventArgs e)
+        //{
+        //    _user.Disconnect();
+        //}
     }
 }

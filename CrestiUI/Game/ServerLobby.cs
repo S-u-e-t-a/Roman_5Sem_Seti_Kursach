@@ -83,6 +83,7 @@ namespace CrestiUI.Game
                 {
                     var response = new Response("StartGame", null);
                     server.BroadcastLine(response.ToJsonString());
+                    GameStarted(this, null);
                     LobbyState = LobbyState.GameStarted;
                 }
             }

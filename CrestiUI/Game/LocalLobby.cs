@@ -37,9 +37,10 @@ namespace CrestiUI.Game
             users = new List<LocalUser>();
             users.Add(_user);
             var port = Settings.Default.DefaultPort;
-            _user.ConnectToLobby(lobbyToConnect.Ip, port);
             _user.tcpClient.DelimiterDataReceived += processMessage;
+            _user.ConnectToLobby(lobbyToConnect.Ip, port);
         }
+        //public void connectToLobby()
 
 
         //public LocalLobby(UserInLobby user, string lobbyName)
@@ -65,7 +66,7 @@ namespace CrestiUI.Game
             if (response.Name == "UserList")
             {
                 users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
-                UsersUpdatedHandler(this, null);
+                UsersUpdatedHandler?.Invoke(this, null);
             }
 
             if (response.Name == "StartGame")
