@@ -22,14 +22,16 @@ namespace CrestiUI.Game
             server.Start(port, AddressFamily.InterNetwork);
             users = new List<LocalUser>();
             _user = new UserInLobby(userName);
+            _user.tcpClient.DelimiterDataReceived += processMessage;
             _user.ConnectToLobby("localhost", port);
-            server.DelimiterDataReceived += processMessage;
+
+            server.DelimiterDataReceived += serverProcessMessage;
 
             LobbyState = LobbyState.SearchingForPlayers;
         }
 
 
-        private void processMessage(object sender, Message message)
+        private void serverProcessMessage(object sender, Message message)
         {
             Trace.WriteLine($"На сервер пришло {message.MessageString}");
             var request = new Request(message.MessageString);
@@ -66,7 +68,7 @@ namespace CrestiUI.Game
                     var userName = request.Args["UserName"];
                     var ip = request.Args["UserIp"];
                     users.Add(new LocalUser(userName, ip));
-                    UsersUpdatedHandler(this, null);
+                    UsersUpdatedHandler?.Invoke(this, null);
                     var response = new Response("UserList", new Dictionary<string, string>
                     {
                         {"Users", JsonSerializer.Serialize(users)}
@@ -85,6 +87,18 @@ namespace CrestiUI.Game
                     server.BroadcastLine(response.ToJsonString());
                     GameStarted(this, null);
                     LobbyState = LobbyState.GameStarted;
+                }
+
+                if (request.FuncName == RequestCommands.POSTUserMark.ToString())
+                {
+                    var col = request.Args["col"];
+                    var row = request.Args["row"];
+                    var response = new Response("MarkCell", new Dictionary<string, string>
+                    {
+                        {"row", row},
+                        {"col", col}
+                    });
+                    server.BroadcastLine(response.ToJsonString());
                 }
             }
         }

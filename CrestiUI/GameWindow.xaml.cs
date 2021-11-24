@@ -7,8 +7,7 @@ using System.Windows.Threading;
 using CRESTI;
 
 using CrestiUI.Game;
-
-using Tcp;
+using CrestiUI.net;
 
 namespace CrestiUI
 {
@@ -17,14 +16,19 @@ namespace CrestiUI
     /// </summary>
     public partial class GameWindow : Window
     {
-        private readonly SimpleTcpClient _user;
+        private readonly Board _game;
         private readonly List<Button> cells;
-        private readonly Board Game;
+        private readonly LocalLobby _lobby;
 
 
         public GameWindow(LocalLobby lobby)
         {
+            _lobby = lobby;
             InitializeComponent();
+
+
+            #region CellsInitialization
+
             cells = new List<Button>();
             cells.Add(Cell1);
             cells.Add(Cell2);
@@ -44,7 +48,20 @@ namespace CrestiUI
             Cell7.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 0); };
             Cell8.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 1); };
             Cell9.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 2); };
-            Game = new Board();
+
+            #endregion
+
+
+            _lobby.CellMarked += (sender, args, row, col) => markCell(row, col);
+
+            _game = new Board();
+        }
+
+
+        private void markCell(int row, int col)
+        {
+            _game.Mark(row, col);
+            updateBoard();
         }
 
 
@@ -67,8 +84,7 @@ namespace CrestiUI
                 for (var j = 0; j < 3; j++)
                 {
                     Dispatcher.Invoke(
-                        DispatcherPriority.Normal,
-                        new Action(() => cells[(i * 3) + j].Content = Game.Cells[i, j].Value)
+                        () => cells[(i * 3) + j].Content = _game.Cells[i, j].Value
                     );
                 }
             }
@@ -89,21 +105,12 @@ namespace CrestiUI
 
         private void cell_click(object sender, EventArgs e, int row, int col)
         {
-            _user.WriteLine($"Mark?row={row}&col={col}");
-            //Game.Mark(row, col);
-
-            (sender as Button).Content = Game.Cells[row, col].Value;
-            if (Game.State == GameState.Finished)
+            var request = new Request("POST", RequestCommands.POSTUserMark, new Dictionary<string, string>
             {
-                if (Game.Winner != null)
-                {
-                    MessageBox.Show($"Победил {Game.Winner}");
-                }
-                else
-                {
-                    MessageBox.Show("Ничья");
-                }
-            }
+                {"row", row.ToString()},
+                {"col", col.ToString()}
+            });
+            _lobby.SendMessageToServer(request.ToJsonString());
         }
 
 
