@@ -52,7 +52,7 @@ namespace CrestiUI
                 LobbyState lobbyState;
                 Enum.TryParse(lobbyData.Args["State"], out lobbyState);
                 var chatHistory = lobbyData.Args["ChatHistory"];
-                var lobby = new LocalLobby(ipToConnect,userName,lobbyName,lobbyState,chatHistory);
+                var lobby = new LocalLobby(ipToConnect, userName, lobbyName, lobbyState, chatHistory);
                 if (lobby.LobbyState == LobbyState.SearchingForPlayers)
                 {
                     var lobbyWindow = new LobbyWindow(lobby);
@@ -63,13 +63,13 @@ namespace CrestiUI
                     var gameWindow = new GameWindow(lobby);
                     gameWindow.Show();
                 }
+
                 Close();
             }
             else
             {
                 MessageBox.Show("Не удалось подключиться к серверу");
             }
-            
         }
     }
 }
