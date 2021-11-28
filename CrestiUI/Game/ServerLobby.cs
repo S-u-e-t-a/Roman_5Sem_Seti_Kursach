@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 
@@ -43,9 +44,10 @@ namespace CrestiUI.Game
                     {
                         {"IsLobby", "true"},
                         {"State", LobbyState.ToString()},
-                        {"Ip", getIp()},
+                        {"Ip", JsonSerializer.Serialize(getIps())},
                         {"Name", LobbyName},
-                        {"CountOfPlayers", PlayerCount.ToString()}
+                        {"CountOfPlayers", PlayerCount.ToString()},
+                        {"ChatHistory", ChatHistory}
                     });
                     message.Reply(response.ToJsonString());
                 }
@@ -110,9 +112,9 @@ namespace CrestiUI.Game
         }
 
 
-        public string getIp()
+        public IEnumerable<IPAddress> getIps()
         {
-            return server.GetIPAddresses().First().ToString();
+            return server.GetIPAddresses().Where(a => a.AddressFamily == AddressFamily.InterNetwork);
         }
 
 

@@ -9,36 +9,56 @@
         d:DataContext="{d:DesignInstance crestiUi:LobbyWindowVM}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
-            <Label Content="X Player" HorizontalAlignment="Left" Margin="43,61,0,0" VerticalAlignment="Top" />
-            <Label Content="O Player" HorizontalAlignment="Left" Margin="43,282,0,0" VerticalAlignment="Top" />
-            <Label x:Name="XPlayerNameLabel" Content="{Binding XPlayer.Name}" HorizontalAlignment="Left"
-                   Margin="43,92,0,0"
-                   VerticalAlignment="Top" />
-            <Label x:Name="YPlayerNameLabel" Content="{Binding OPlayer.Name}" HorizontalAlignment="Left"
-                   Margin="43,313,0,0"
-                   VerticalAlignment="Top" />
-            <Button Content="Стать X" HorizontalAlignment="Left" Margin="191,74,0,0" VerticalAlignment="Top"
-                    IsEnabled="{Binding CanUserBecomeXPlayer}"
-                    Command="{Binding MakeLocalUserXPlayer}" />
-            <Button Content="Стать Y" HorizontalAlignment="Left" Margin="191,288,0,0" VerticalAlignment="Top"
-                    IsEnabled="{Binding CanUserBecomeOPlayer}"
-                    Command="{Binding MakeLocalUserOPlayer}" />
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <GroupBox Margin="40,20,49,127" Height="70" >
+                <Grid  >
+                    <Label Content="X Player" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10,0,0,0" />
+                    <Label x:Name="XPlayerNameLabel" Content="{Binding XPlayer.Name}" HorizontalAlignment="Left"
+                           Margin="10,31,0,0"
+                           VerticalAlignment="Top" />
+                    <Button Content="Стать X" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top"
+                            IsEnabled="{Binding CanUserBecomeXPlayer}"
+                            Command="{Binding MakeLocalUserXPlayer}"  />
+                </Grid>
+            </GroupBox>
+            <GroupBox Margin="40,120,54,27" Height="70">
+                <Grid>
+                    <Label Content="O Player" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+
+                    <Label x:Name="YPlayerNameLabel" Content="{Binding OPlayer.Name}" HorizontalAlignment="Left"
+                           Margin="10,31,0,0"
+                           VerticalAlignment="Center" />
+
+                    <Button Content="Стать Y" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top"
+                            IsEnabled="{Binding CanUserBecomeOPlayer}"
+                            Command="{Binding MakeLocalUserOPlayer}"  />
+                </Grid>
+            </GroupBox>
+
+
+            <Expander Header="Список локальных IP" Grid.Row="1">
+                <ListBox ItemsSource="{Binding }" />
+            </Expander>
+            
 
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="60"/>
 
             </Grid.RowDefinitions>
-            <DataGrid x:Name="userGrid" ItemsSource="{Binding Users}" />
+            <ListBox x:Name="userGrid" ItemsSource="{Binding Users}" />
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button x:Name="StartButton" Width="164" Height="116" Command="{ Binding StartGame}">start</Button>
-                <Button Width="209" Height="115">exit</Button>
+                <Button x:Name="StartButton" Margin="10" Command="{ Binding StartGame}" Width="120">start</Button>
+                <Button Margin="10" Width="120">exit</Button>
             </StackPanel>
         </Grid>
     </Grid>

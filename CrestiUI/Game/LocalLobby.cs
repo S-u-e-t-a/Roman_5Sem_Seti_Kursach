@@ -12,7 +12,13 @@ using Tcp;
 
 namespace CrestiUI.Game
 {
-    public class LocalLobby : LobbyInLobbyList
+    public enum LobbyState
+    {
+        SearchingForPlayers,
+        GameStarted
+    }
+
+    public class LocalLobby
     {
         public delegate void CellMarkedHandler(object sender, EventArgs e, int row, int col);
 
@@ -23,15 +29,24 @@ namespace CrestiUI.Game
         public EventHandler UsersUpdatedHandler;
         public EventHandler<int[]> GameStarted;
         public List<LocalUser> users;
-
+        public string ChatHistory;
         public WritedToChatHandler WritedToChat;
 
         protected UserInLobby _user;
 
 
-        public override int PlayerCount
+        public int PlayerCount
         {
             get { return users.Count; }
+        }
+
+        public LobbyState LobbyState { get; protected set; }
+        public string Ip { get; }
+        public string LobbyName { get; protected set; }
+
+        public string LocalIps
+        {
+            get { return ""; }
         }
 
         public UserInLobby Oplayer { get; set; }
@@ -40,8 +55,9 @@ namespace CrestiUI.Game
         public UserInLobby Xplayer { get; set; }
 
 
-        public LocalLobby(string ipToConnect, string userName)
+        public LocalLobby(string ipToConnect, string userName, string lobbyName)
         {
+            LobbyName = lobbyName;
             _user = new UserInLobby(userName);
             users = new List<LocalUser>();
             users.Add(_user);
@@ -64,6 +80,13 @@ namespace CrestiUI.Game
 
         protected LocalLobby()
         {
+        }
+
+
+        public LocalLobby(string ipToConnect, string userName, string lobbyName, LobbyState lobbyState, string chatHistory) : this(ipToConnect, userName, lobbyName)
+        {
+            ChatHistory = chatHistory;
+            LobbyState = lobbyState;
         }
 
 
