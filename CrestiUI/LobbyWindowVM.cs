@@ -43,6 +43,32 @@ namespace CrestiUI
             }
         }
 
+        public IEnumerable<string> Localps
+        {
+            get { return LocalLobby.LocalIps; }
+        }
+
+        public LocalUser OPlayer
+        {
+            get { return LocalLobby.Oplayer; }
+            set
+            {
+                LocalLobby.Oplayer = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public LocalUser XPlayer
+        {
+            get { return LocalLobby.Xplayer; }
+            set
+            {
+                LocalLobby.Xplayer = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<LocalUser> Users
         {
             get { return new(LocalLobby.users); }
@@ -66,27 +92,6 @@ namespace CrestiUI
         public RelayCommand StartGame
         {
             get { return _startGame ?? (_startGame = new RelayCommand(o => { LocalLobby.SendToServerGameStart(); })); }
-        }
-
-        public UserInLobby OPlayer
-        {
-            get { return LocalLobby.Oplayer; }
-            set
-            {
-                LocalLobby.Oplayer = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        public UserInLobby XPlayer
-        {
-            get { return LocalLobby.Xplayer; }
-            set
-            {
-                LocalLobby.Xplayer = value;
-                OnPropertyChanged();
-            }
         }
 
 

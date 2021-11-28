@@ -32,7 +32,10 @@ namespace CrestiUI.Game
         public string ChatHistory;
         public WritedToChatHandler WritedToChat;
 
-        protected UserInLobby _user;
+        protected LocalUser _user;
+        protected SimpleTcpClient tcpClient;
+
+        public virtual IEnumerable<string> LocalIps { get; private set; }
 
 
         public int PlayerCount
@@ -41,41 +44,26 @@ namespace CrestiUI.Game
         }
 
         public LobbyState LobbyState { get; protected set; }
-        public string Ip { get; }
+        public LocalUser Oplayer { get; set; }
+
+
+        public LocalUser Xplayer { get; set; }
         public string LobbyName { get; protected set; }
 
-        public string LocalIps
+
+        public LocalLobby(string ipToConnect, string userName)
         {
-            get { return ""; }
-        }
-
-        public UserInLobby Oplayer { get; set; }
-
-
-        public UserInLobby Xplayer { get; set; }
-
-
-        public LocalLobby(string ipToConnect, string userName, string lobbyName)
-        {
-            LobbyName = lobbyName;
-            _user = new UserInLobby(userName);
+            _user = new LocalUser(userName);
             users = new List<LocalUser>();
             users.Add(_user);
+            tcpClient = new SimpleTcpClient();
+            tcpClient.DelimiterDataReceived += processMessage;
+
             var port = Settings.Default.DefaultPort;
-            _user.tcpClient.DelimiterDataReceived += processMessage;
-            _user.ConnectToLobby(ipToConnect, port);
+
+            connectToServerLobby(ipToConnect, port);
+            syncWithServer();
         }
-        //public void connectToLobby()
-
-
-        //public LocalLobby(UserInLobby user, string lobbyName)
-        //{
-        //    users = new List<LocalUser>();
-        //    _user = user;
-        //    users.Add(_user);
-        //    _user.serverClient.DelimiterDataReceived += processMessage;
-        //    LobbyName = lobbyName;
-        //}
 
 
         protected LocalLobby()
@@ -83,10 +71,47 @@ namespace CrestiUI.Game
         }
 
 
-        public LocalLobby(string ipToConnect, string userName, string lobbyName, LobbyState lobbyState, string chatHistory) : this(ipToConnect, userName, lobbyName)
+        protected void connectToServerLobby(string ip, int port)
         {
-            ChatHistory = chatHistory;
-            LobbyState = lobbyState;
+            tcpClient.Connect(ip, port);
+            var request = new Request("POST", RequestCommands.POSTUserJoinedLobby, new Dictionary<string, string>
+            {
+                {"UserName", _user.Name}
+            });
+            tcpClient.WriteLine(request.ToJsonString());
+        }
+
+
+        //public LocalLobby(string ipToConnect, string userName, string lobbyName, LobbyState lobbyState, string chatHistory) : this(ipToConnect, userName, lobbyName)
+        //{
+        //    ChatHistory = chatHistory;
+        //    LobbyState = lobbyState;
+        //}
+
+
+        protected void syncWithServer()
+        {
+            lock (this)
+            {
+                var ans = tcpClient.WriteLineAndGetReply(new Request("GET", RequestCommands.GETLobbyData, null).ToJsonString(), TimeSpan.FromSeconds(3));
+                if (ans != null)
+                {
+                    var lobbyData = new Response(ans.MessageString);
+                    if (lobbyData.Args["IsLobby"] == "true")
+                    {
+                        LobbyName = lobbyData.Args["Name"];
+                        LobbyState lobbyState;
+                        Enum.TryParse(lobbyData.Args["State"], out lobbyState);
+                        LobbyState = lobbyState;
+                        ChatHistory = lobbyData.Args["ChatHistory"];
+                        LocalIps = JsonSerializer.Deserialize<IEnumerable<string>>(lobbyData.Args["Ip"]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                }
+            }
         }
 
 
@@ -103,49 +128,52 @@ namespace CrestiUI.Game
 
         protected void processMessage(object sender, Message message)
         {
-            Trace.WriteLine($"Пришло в LocalLobby {message.MessageString} ");
-            var response = new Response(message.MessageString);
-
-            if (response.Name == "UserList")
+            lock (this)
             {
-                users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
-                UsersUpdatedHandler?.Invoke(this, null);
-            }
+                Trace.WriteLine($"Пришло в LocalLobby {message.MessageString} ");
+                var response = new Response(message.MessageString);
 
-            if (response.Name == "StartGame")
-            {
-                GameStarted(this, null);
-            }
-
-            if (response.Name == "MarkCell")
-            {
-                var col = Convert.ToInt32(response.Args["col"]);
-                var row = Convert.ToInt32(response.Args["row"]);
-                CellMarked(this, null, row, col);
-            }
-
-            if (response.Name == "WriteToChat")
-            {
-                var userName = response.Args["UserName"];
-                var mes = response.Args["Message"];
-                WritedToChat(this, null, userName, mes);
-            }
-
-            if (response.Name == "PlayerBecomePlayer")
-            {
-                var playerType = JsonSerializer.Deserialize<PlayerType>(response.Args["PlayerType"]);
-                var player = JsonSerializer.Deserialize<UserInLobby>(response.Args["LocalUser"]);
-                if (playerType == PlayerType.O)
+                if (response.Name == "UserList")
                 {
-                    Oplayer = player;
+                    users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
+                    UsersUpdatedHandler?.Invoke(this, null);
                 }
 
-                if (playerType == PlayerType.X)
+                if (response.Name == "StartGame")
                 {
-                    Xplayer = player;
+                    GameStarted(this, null);
                 }
 
-                PlayerUpdatedHandler(this, null);
+                if (response.Name == "MarkCell")
+                {
+                    var col = Convert.ToInt32(response.Args["col"]);
+                    var row = Convert.ToInt32(response.Args["row"]);
+                    CellMarked(this, null, row, col);
+                }
+
+                if (response.Name == "WriteToChat")
+                {
+                    var userName = response.Args["UserName"];
+                    var mes = response.Args["Message"];
+                    WritedToChat(this, null, userName, mes);
+                }
+
+                if (response.Name == "PlayerBecomePlayer")
+                {
+                    var playerType = JsonSerializer.Deserialize<PlayerType>(response.Args["PlayerType"]);
+                    var player = JsonSerializer.Deserialize<LocalUser>(response.Args["LocalUser"]);
+                    if (playerType == PlayerType.O)
+                    {
+                        Oplayer = player;
+                    }
+
+                    if (playerType == PlayerType.X)
+                    {
+                        Xplayer = player;
+                    }
+
+                    PlayerUpdatedHandler(this, null);
+                }
             }
         }
 
@@ -153,20 +181,20 @@ namespace CrestiUI.Game
         public void SendToServerGameStart()
         {
             var request = new Request("POST", RequestCommands.POSTGameStart, null);
-            _user.tcpClient.WriteLine(request.ToJsonString());
+            tcpClient.WriteLine(request.ToJsonString());
         }
 
 
         public void SendMessageToServer(string message)
         {
-            _user.tcpClient.WriteLine(message);
+            tcpClient.WriteLine(message);
         }
 
 
         protected void getUsers()
         {
             var request = new Request("GET", RequestCommands.GETLobbyUsers, null).ToJsonString();
-            var ans = _user.tcpClient.WriteLineAndGetReply(request, TimeSpan.FromSeconds(10));
+            var ans = tcpClient.WriteLineAndGetReply(request, TimeSpan.FromSeconds(10));
             var response = new Response(ans.MessageString);
             users = JsonSerializer.Deserialize<List<LocalUser>>(response.Args["Users"]);
         }

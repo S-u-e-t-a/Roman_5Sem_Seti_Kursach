@@ -44,7 +44,7 @@
 
 
             <Expander Header="Список локальных IP" Grid.Row="1">
-                <ListBox ItemsSource="{Binding }" />
+                <ListBox ItemsSource="{Binding Localps}" />
             </Expander>
             
 
@@ -55,7 +55,7 @@
                 <RowDefinition Height="60"/>
 
             </Grid.RowDefinitions>
-            <ListBox x:Name="userGrid" ItemsSource="{Binding Users}" />
+            <ListBox x:Name="userGrid" ItemsSource="{Binding Users}" DisplayMemberPath="Name"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button x:Name="StartButton" Margin="10" Command="{ Binding StartGame}" Width="120">start</Button>
                 <Button Margin="10" Width="120">exit</Button>

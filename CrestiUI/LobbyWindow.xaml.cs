@@ -18,16 +18,14 @@ namespace CrestiUI
             DataContext = new LobbyWindowVM(_lobby);
             _lobby.GameStarted += (sender, args) => gameStarted();
             InitializeComponent();
+            Title = "Лобби: " + lobby.LobbyName;
             StartButton.Visibility = Visibility.Hidden;
         }
 
 
-        public LobbyWindow(ServerLobby lobby)
+        public LobbyWindow(ServerLobby lobby) : this((LocalLobby) lobby)
         {
-            _lobby = lobby;
-            DataContext = new LobbyWindowVM(_lobby);
-            _lobby.GameStarted += (sender, args) => gameStarted();
-            InitializeComponent();
+            StartButton.Visibility = Visibility.Visible;
         }
 
 
