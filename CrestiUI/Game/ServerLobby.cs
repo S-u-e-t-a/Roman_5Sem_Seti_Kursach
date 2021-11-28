@@ -85,7 +85,7 @@ namespace CrestiUI.Game
                 {
                     var response = new Response("StartGame", null);
                     server.BroadcastLine(response.ToJsonString());
-                    GameStarted(this, null);
+                    //GameStarted(this, null);
                     LobbyState = LobbyState.GameStarted;
                 }
 
@@ -98,6 +98,12 @@ namespace CrestiUI.Game
                         {"row", row},
                         {"col", col}
                     });
+                    server.BroadcastLine(response.ToJsonString());
+                }
+
+                if (request.FuncName == RequestCommands.POSTPlayerBecomePlayer.ToString())
+                {
+                    var response = new Response("PlayerBecomePlayer", request.Args);
                     server.BroadcastLine(response.ToJsonString());
                 }
             }

@@ -9,23 +9,19 @@ namespace CrestiUI
     /// </summary>
     public partial class JoinLobbyWindow : Window
     {
-        private readonly LobbyInLobbyList lobbyToConnect;
-
-
-        public JoinLobbyWindow(LobbyInLobbyList lobby)
+        public JoinLobbyWindow()
         {
             InitializeComponent();
-            lobbyToConnect = lobby;
         }
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var userName = UserNameTextBox.Text;
-            var lobby = new LocalLobby(lobbyToConnect, userName);
+            var ipToConnect = IpTextBox.Text;
+            var lobby = new LocalLobby(ipToConnect, userName);
             var lobbyWindow = new LobbyWindow(lobby);
             lobbyWindow.Show();
-
             Close();
         }
     }

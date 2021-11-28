@@ -15,14 +15,18 @@
         <Grid Grid.Column="0">
             <Label Content="X Player" HorizontalAlignment="Left" Margin="43,61,0,0" VerticalAlignment="Top" />
             <Label Content="O Player" HorizontalAlignment="Left" Margin="43,282,0,0" VerticalAlignment="Top" />
-            <Label x:Name="XPlayerNameLabel" Content="" HorizontalAlignment="Left" Margin="43,92,0,0"
+            <Label x:Name="XPlayerNameLabel" Content="{Binding XPlayer.Name}" HorizontalAlignment="Left"
+                   Margin="43,92,0,0"
                    VerticalAlignment="Top" />
-            <Label x:Name="YPlayerNameLabel" Content="" HorizontalAlignment="Left" Margin="43,313,0,0"
+            <Label x:Name="YPlayerNameLabel" Content="{Binding OPlayer.Name}" HorizontalAlignment="Left"
+                   Margin="43,313,0,0"
                    VerticalAlignment="Top" />
             <Button Content="Стать X" HorizontalAlignment="Left" Margin="191,74,0,0" VerticalAlignment="Top"
-                    Click="becomeX_Click" />
+                    IsEnabled="{Binding CanUserBecomeXPlayer}"
+                    Command="{Binding MakeLocalUserXPlayer}" />
             <Button Content="Стать Y" HorizontalAlignment="Left" Margin="191,288,0,0" VerticalAlignment="Top"
-                    Click="becomeY_Click" />
+                    IsEnabled="{Binding CanUserBecomeOPlayer}"
+                    Command="{Binding MakeLocalUserOPlayer}" />
 
         </Grid>
         <Grid Grid.Column="1">
@@ -31,9 +35,9 @@
                 <RowDefinition />
 
             </Grid.RowDefinitions>
-            <DataGrid x:Name="userGrid" ItemsSource="{Binding Users}"/>
+            <DataGrid x:Name="userGrid" ItemsSource="{Binding Users}" />
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button x:Name="StartButton" Width="164" Height="116" Command="{ Binding StartGame}" >start</Button>
+                <Button x:Name="StartButton" Width="164" Height="116" Command="{ Binding StartGame}">start</Button>
                 <Button Width="209" Height="115">exit</Button>
             </StackPanel>
         </Grid>

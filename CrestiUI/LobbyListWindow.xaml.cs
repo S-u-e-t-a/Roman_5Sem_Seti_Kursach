@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Windows;
 
 using CrestiUI.Game;
@@ -45,7 +44,7 @@ namespace CrestiUI
             var lobbies = new List<LobbyInLobbyList>();
             var port = Settings.Default.DefaultPort;
             var checkLobbyIps = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners()
-                .Where(l => (l.Port == port) && (l.AddressFamily == AddressFamily.InterNetwork));
+                .Where(l => l.Port == port);
 
             foreach (var ip in checkLobbyIps)
             {
@@ -56,6 +55,7 @@ namespace CrestiUI
                 }
             }
 
+            lobbies.Add(new LobbyInLobbyList("sss", "26.34.42.3", 1, LobbyState.SearchingForPlayers));
             LobbyList = lobbies;
             LobbyDataGrid.ItemsSource = LobbyList;
         }
@@ -91,8 +91,8 @@ namespace CrestiUI
 
         public void ConnectToLobby(LobbyInLobbyList lobby)
         {
-            var joinLobbyWindow = new JoinLobbyWindow(lobby);
-            joinLobbyWindow.Show();
+            //var joinLobbyWindow = new JoinLobbyWindow(lobby);
+            //joinLobbyWindow.Show();
 
             Close();
         }
@@ -100,9 +100,9 @@ namespace CrestiUI
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
-            var lobby = LobbyDataGrid.SelectedItem as LobbyInLobbyList;
-            var joinLobbyWindow = new JoinLobbyWindow(lobby);
-            joinLobbyWindow.Show();
+            //var lobby = LobbyDataGrid.SelectedItem as LobbyInLobbyList;
+            //var joinLobbyWindow = new JoinLobbyWindow(lobby);
+            //joinLobbyWindow.Show();
             Close();
         }
 

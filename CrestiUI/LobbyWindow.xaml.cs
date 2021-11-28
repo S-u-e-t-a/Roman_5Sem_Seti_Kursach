@@ -40,15 +40,5 @@ namespace CrestiUI
                 Close();
             });
         }
-
-
-        private void becomeX_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-
-        private void becomeY_Click(object sender, RoutedEventArgs e)
-        {
-        }
     }
 }

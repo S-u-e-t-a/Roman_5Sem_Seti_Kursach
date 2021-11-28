@@ -4,16 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="CreateLobbyWindow" Height="450" Width="800">
+        Title="CreateLobbyWindow" Height="180" Width="400">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition  Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -21,16 +17,12 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Имя лобби</Label>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="LobbyNameTextBox" Text="imya lobbi" />
+        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="LobbyNameTextBox" Text="imya lobbi" />
 
-        <Label Grid.Row="2" Grid.Column="0">Имя пользователя</Label>
-        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="imya polzovatelya" />
+        <Label Grid.Row="1" Grid.Column="0">Имя пользователя</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="imya polzovatelya" />
 
-        <CheckBox Grid.Row="4" Grid.Column="0" />
-        <Label Grid.Row="4" Grid.Column="1">Пароль</Label>
-        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="PasswordTextBox" Text="parol" />
-
-        <Button Grid.Row="6" Grid.Column="0" Click="CreateLobby_Click">создать</Button>
-        <Button Grid.Row="6" Grid.Column="1">отмена</Button>
+        <Button Grid.Row="2" Grid.Column="0" Click="CreateLobby_Click" Margin="30,15,30,15">создать лобби</Button>
+        <Button Grid.Row="2" Grid.Column="1" Margin="30,15,30,15">отмена</Button>
     </Grid>
 </Window>

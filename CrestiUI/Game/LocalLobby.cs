@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 
+using CRESTI;
+
 using CrestiUI.net;
 using CrestiUI.Properties;
 
@@ -17,9 +19,9 @@ namespace CrestiUI.Game
         public delegate void WritedToChatHandler(object sender, EventArgs e, string username, string message);
 
         public CellMarkedHandler CellMarked;
+        public EventHandler PlayerUpdatedHandler;
         public EventHandler UsersUpdatedHandler;
         public EventHandler<int[]> GameStarted;
-
         public List<LocalUser> users;
 
         public WritedToChatHandler WritedToChat;
@@ -32,20 +34,20 @@ namespace CrestiUI.Game
             get { return users.Count; }
         }
 
+        public UserInLobby Oplayer { get; set; }
+
 
         public UserInLobby Xplayer { get; set; }
 
-        public UserInLobby Yplayer { get; set; }
 
-
-        public LocalLobby(LobbyInLobbyList lobbyToConnect, string userName)
+        public LocalLobby(string ipToConnect, string userName)
         {
             _user = new UserInLobby(userName);
             users = new List<LocalUser>();
             users.Add(_user);
             var port = Settings.Default.DefaultPort;
             _user.tcpClient.DelimiterDataReceived += processMessage;
-            _user.ConnectToLobby(lobbyToConnect.Ip, port);
+            _user.ConnectToLobby(ipToConnect, port);
         }
         //public void connectToLobby()
 
@@ -62,6 +64,17 @@ namespace CrestiUI.Game
 
         protected LocalLobby()
         {
+        }
+
+
+        public void MakeLocalUserPlayer(PlayerType playerType)
+        {
+            var request = new Request("POST", RequestCommands.POSTPlayerBecomePlayer, new Dictionary<string, string>
+            {
+                {"PlayerType", JsonSerializer.Serialize(playerType)},
+                {"LocalUser", JsonSerializer.Serialize(_user)}
+            });
+            SendMessageToServer(request.ToJsonString());
         }
 
 
@@ -93,6 +106,23 @@ namespace CrestiUI.Game
                 var userName = response.Args["UserName"];
                 var mes = response.Args["Message"];
                 WritedToChat(this, null, userName, mes);
+            }
+
+            if (response.Name == "PlayerBecomePlayer")
+            {
+                var playerType = JsonSerializer.Deserialize<PlayerType>(response.Args["PlayerType"]);
+                var player = JsonSerializer.Deserialize<UserInLobby>(response.Args["LocalUser"]);
+                if (playerType == PlayerType.O)
+                {
+                    Oplayer = player;
+                }
+
+                if (playerType == PlayerType.X)
+                {
+                    Xplayer = player;
+                }
+
+                PlayerUpdatedHandler(this, null);
             }
         }
 

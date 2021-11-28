@@ -4,24 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="JoinLobbyWindow" Height="450" Width="800">
+        ResizeMode="CanMinimize"
+        Title="JoinLobbyWindow" Width="400" Height="180">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="200*" />
+            <ColumnDefinition Width="121*" />
+            <ColumnDefinition Width="79*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"> Имя пользователя</Label>
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="UserNameTextBox" Text="imya prisoed pozvoatelya" />
-        <Label Grid.Row="2" Grid.Column="0">пароль</Label>
-        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Пароль" />
-        <Button Grid.Row="4" Grid.Column="0" Click="Button_Click">присоединиться</Button>
-        <Button Grid.Row="4" Grid.Column="1">отмена</Button>
+        <Label Grid.Row="0" Grid.Column="0">Имя пользователя</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="UserNameTextBox"
+                 Text="imya prisoed pozvoatelya" />
+        <Label Grid.Row="1" Grid.Column="0">IP сервера</Label>
+        <TextBox x:Name="IpTextBox" Grid.Row="1" Grid.Column="1" Text="127.0.0.1" Grid.ColumnSpan="2" />
+        <Button Grid.Row="2" Grid.Column="0" Click="Button_Click" Margin="30,15,30,15">присоединиться</Button>
+        <Button Grid.Row="2" Grid.Column="1" Margin="30,15,30,15" Grid.ColumnSpan="2">отмена</Button>
     </Grid>
 </Window>

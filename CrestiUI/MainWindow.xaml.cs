@@ -27,8 +27,16 @@ namespace CrestiUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var lobbyListWindow = new LobbyListWindow();
-            lobbyListWindow.Show();
+            var joinLobbyWindow = new JoinLobbyWindow();
+            joinLobbyWindow.Show();
+            Close();
+        }
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var createLobbyWindow = new CreateLobbyWindow();
+            createLobbyWindow.Show();
             Close();
         }
     }

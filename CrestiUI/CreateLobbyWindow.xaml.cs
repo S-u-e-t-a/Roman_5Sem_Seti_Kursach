@@ -23,7 +23,6 @@ namespace CrestiUI
             var port = Settings.Default.DefaultPort;
             var lobby = new ServerLobby(userName, lobbyName, port);
             var lobbyWindow = new LobbyWindow(lobby);
-
             lobbyWindow.Show();
             Close();
         }

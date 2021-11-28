@@ -7,6 +7,7 @@
 
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Margin="236,182,236,161" Click="Button_Click">Перейти к списку серверов</Button>
+        <Button Margin="177,172,428,171" Click="Button_Click">Присоединиться к лобби</Button>
+        <Button Margin="419,172,186,171" Click="Button_Click_1">Создать лобби</Button>
     </Grid>
 </Window>

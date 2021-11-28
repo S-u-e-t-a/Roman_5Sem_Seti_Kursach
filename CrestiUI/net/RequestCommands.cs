@@ -9,6 +9,7 @@
         GETLobbyUsers,
         POSTGameStart,
         POSTClientsMustUpdateUsers,
-        POSTSendLobbyUsers
+        POSTSendLobbyUsers,
+        POSTPlayerBecomePlayer
     }
 }
