@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -17,8 +18,28 @@ namespace CrestiUI
     public partial class GameWindow : Window
     {
         private readonly Board _game;
+
+        private bool _isUserTurn;
+        private readonly bool isPlayer;
         private readonly List<Button> cells;
         private readonly LocalLobby _lobby;
+
+        private bool isUserTurn
+        {
+            get { return _isUserTurn; }
+            set
+            {
+                _isUserTurn = value;
+                if (value)
+                {
+                    setCellsEnabled();
+                }
+                else
+                {
+                    setCellsDisabled();
+                }
+            }
+        }
 
 
         public GameWindow(LocalLobby lobby)
@@ -26,8 +47,7 @@ namespace CrestiUI
             _lobby = lobby;
             InitializeComponent();
 
-
-            #region CellsInitialization
+            _game = new Board();
 
             cells = new List<Button>();
             cells.Add(Cell1);
@@ -39,22 +59,32 @@ namespace CrestiUI
             cells.Add(Cell7);
             cells.Add(Cell8);
             cells.Add(Cell9);
-            Cell1.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 0); };
-            Cell2.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 1); };
-            Cell3.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 2); };
-            Cell4.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 0); };
-            Cell5.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 1); };
-            Cell6.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 2); };
-            Cell7.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 0); };
-            Cell8.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 1); };
-            Cell9.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 2); };
+            isPlayer = _lobby.isPlayerUser();
+            isUserTurn = _lobby.isXPlayer();
+            Trace.WriteLine($"isX {_lobby.isXPlayer()}    isO {_lobby.isOPlayer()}");
+            if (isPlayer)
+            {
+                #region CellsInitialization
 
-            #endregion
+                Cell1.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 0); };
+                Cell2.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 1); };
+                Cell3.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 0, 2); };
+                Cell4.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 0); };
+                Cell5.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 1); };
+                Cell6.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 1, 2); };
+                Cell7.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 0); };
+                Cell8.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 1); };
+                Cell9.Click += (sender, EventArgs) => { cell_click(sender, EventArgs, 2, 2); };
 
+                #endregion
+            }
+
+            if (_lobby.isXPlayer())
+            {
+                isUserTurn = true;
+            }
 
             _lobby.CellMarked += (sender, args, row, col) => markCell(row, col);
-
-            _game = new Board();
         }
 
 
@@ -62,6 +92,16 @@ namespace CrestiUI
         {
             _game.Mark(row, col);
             updateBoard();
+            changeTurn();
+        }
+
+
+        private void changeTurn()
+        {
+            if (isPlayer)
+            {
+                isUserTurn = !isUserTurn;
+            }
         }
 
 

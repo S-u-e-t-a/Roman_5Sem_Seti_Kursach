@@ -25,13 +25,17 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <TextBox> chat</TextBox>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
                 <TextBox Text="soobshenie" />
-                <Button> send</Button>
-            </StackPanel>
+                <Button Grid.Column="1" Margin="7">Отправить</Button>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -71,6 +71,24 @@ namespace CrestiUI.Game
         }
 
 
+        public bool isPlayerUser()
+        {
+            return isOPlayer() || isXPlayer();
+        }
+
+
+        public bool isXPlayer()
+        {
+            return _user.Name == Xplayer.Name;
+        }
+
+
+        public bool isOPlayer()
+        {
+            return _user.Name == Oplayer.Name;
+        }
+
+
         protected void connectToServerLobby(string ip, int port)
         {
             tcpClient.Connect(ip, port);
