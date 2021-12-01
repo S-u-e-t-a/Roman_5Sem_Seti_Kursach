@@ -21,19 +21,26 @@ namespace CrestiUI
             var ipToConnect = IpTextBox.Text;
 
 
-            var lobby = new LocalLobby(ipToConnect, userName);
-            if (lobby.LobbyState == LobbyState.SearchingForPlayers)
+            try
             {
-                var lobbyWindow = new LobbyWindow(lobby);
-                lobbyWindow.Show();
-            }
-            else
-            {
-                var gameWindow = new GameWindow(lobby);
-                gameWindow.Show();
-            }
+                var lobby = new LocalLobby(ipToConnect, userName);
+                if (lobby.LobbyState == LobbyState.SearchingForPlayers)
+                {
+                    var lobbyWindow = new LobbyWindow(lobby);
+                    lobbyWindow.Show();
+                }
+                else
+                {
+                    var gameWindow = new GameWindow(lobby);
+                    gameWindow.Show();
+                }
 
-            Close();
+                Close();
+            }
+            catch
+            {
+                MessageBox.Show("Не удалось подключиться к лобби");
+            }
         }
     }
 }

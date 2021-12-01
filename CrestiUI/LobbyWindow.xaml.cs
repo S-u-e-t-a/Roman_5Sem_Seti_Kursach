@@ -38,5 +38,12 @@ namespace CrestiUI
                 Close();
             });
         }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _lobby.WriteToChat(MessageTextBox.Text);
+            MessageTextBox.Text = string.Empty;
+        }
     }
 }

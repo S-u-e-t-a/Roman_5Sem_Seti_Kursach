@@ -23,6 +23,11 @@ namespace CrestiUI
 
         private RelayCommand _startGame;
 
+
+        private RelayCommand _writeToChat;
+
+        private string _message;
+
         public bool CanUserBecomeOPlayer
         {
             get { return _canUserBecomeOPlayer; }
@@ -58,7 +63,6 @@ namespace CrestiUI
             }
         }
 
-
         public LocalUser XPlayer
         {
             get { return LocalLobby.Xplayer; }
@@ -68,6 +72,7 @@ namespace CrestiUI
                 OnPropertyChanged();
             }
         }
+
 
         public ObservableCollection<LocalUser> Users
         {
@@ -94,6 +99,21 @@ namespace CrestiUI
             get { return _startGame ?? (_startGame = new RelayCommand(o => { LocalLobby.SendToServerGameStart(); })); }
         }
 
+        public string Chat
+        {
+            get { return LocalLobby.ChatHistory; }
+        }
+
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public LobbyWindowVM(LocalLobby lobby)
         {
@@ -115,6 +135,7 @@ namespace CrestiUI
                     CanUserBecomeXPlayer = false;
                 }
             };
+            LocalLobby.WritedToChat += (sender, args, username, message) => { OnPropertyChanged(nameof(Chat)); };
         }
     }
 }

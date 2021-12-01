@@ -151,10 +151,11 @@ namespace CrestiUI.Game
                     CellMarked(this, null, row, col);
                 }
 
-                if (response.Name == "WriteToChat")
+                if (response.Name == "UserWritedToChat")
                 {
                     var userName = response.Args["UserName"];
                     var mes = response.Args["Message"];
+                    ChatHistory += $"{userName}: {mes} \n";
                     WritedToChat(this, null, userName, mes);
                 }
 
@@ -181,6 +182,17 @@ namespace CrestiUI.Game
         public void SendToServerGameStart()
         {
             var request = new Request("POST", RequestCommands.POSTGameStart, null);
+            tcpClient.WriteLine(request.ToJsonString());
+        }
+
+
+        public void WriteToChat(string message)
+        {
+            var request = new Request("POST", RequestCommands.PostUserWriteToChat, new Dictionary<string, string>
+            {
+                {"UserName", _user.Name},
+                {"Message", message}
+            });
             tcpClient.WriteLine(request.ToJsonString());
         }
 

@@ -114,6 +114,12 @@ namespace CrestiUI.Game
                         var response = new Response("PlayerBecomePlayer", request.Args);
                         server.BroadcastLine(response.ToJsonString());
                     }
+
+                    if (request.FuncName == RequestCommands.PostUserWriteToChat.ToString())
+                    {
+                        var response = new Response("UserWritedToChat", request.Args);
+                        server.BroadcastLine(response.ToJsonString());
+                    }
                 }
             }
         }
