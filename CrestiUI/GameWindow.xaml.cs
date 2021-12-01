@@ -85,24 +85,44 @@ namespace CrestiUI
                 isUserTurn = true;
             }
 
-            _lobby.CellMarked += (sender, args, row, col) => markCell(row, col);
-            _lobby.WritedToChat += (sender, args, username, message) => Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
-            _game.GameFinished += (sender, args) =>
+            _lobby.CellMarked += (sender, args, row, col) =>
             {
+                markCell(row, col);
+                checkWin();
+            };
+            _lobby.WritedToChat += (sender, args, username, message) => Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
+            Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
+        }
+
+
+        private void checkWin()
+        {
+            if (_game.State == GameState.Finished)
+            {
+                var mes = string.Empty;
                 var winnerType = _game.Winner;
-                var winnerName = string.Empty;
-                if (winnerType == PlayerType.O)
+                if (winnerType != null)
                 {
-                    winnerName = lobby.Oplayer.Name;
+                    var winnerName = string.Empty;
+                    if (winnerType == PlayerType.O)
+                    {
+                        winnerName = _lobby.Oplayer.Name;
+                    }
+                    else if (winnerType == PlayerType.O)
+                    {
+                        winnerName = _lobby.Xplayer.Name;
+                    }
+
+                    mes = $"Победил {winnerName}";
                 }
                 else
                 {
-                    winnerName = lobby.Xplayer.Name;
+                    mes = "ничья!";
                 }
+
                 setCellsDisabled();
-                MessageBox.Show($"Победил {winnerName}");
-                //_lobby.GameFinished?.Invoke(this, winnerName);
-            };
+                MessageBox.Show(mes);
+            }
         }
 
 
