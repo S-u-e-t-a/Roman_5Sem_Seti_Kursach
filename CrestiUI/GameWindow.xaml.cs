@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -23,6 +22,7 @@ namespace CrestiUI
         private readonly bool isPlayer;
         private readonly List<Button> cells;
         private readonly LocalLobby _lobby;
+
 
         private bool isUserTurn
         {
@@ -59,9 +59,10 @@ namespace CrestiUI
             cells.Add(Cell7);
             cells.Add(Cell8);
             cells.Add(Cell9);
+
             isPlayer = _lobby.isPlayerUser();
             isUserTurn = _lobby.isXPlayer();
-            Trace.WriteLine($"isX {_lobby.isXPlayer()}    isO {_lobby.isOPlayer()}");
+
             if (isPlayer)
             {
                 #region CellsInitialization
@@ -85,6 +86,23 @@ namespace CrestiUI
             }
 
             _lobby.CellMarked += (sender, args, row, col) => markCell(row, col);
+            _lobby.WritedToChat += (sender, args, username, message) => Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
+            _game.GameFinished += (sender, args) =>
+            {
+                var winnerType = _game.Winner;
+                var winnerName = string.Empty;
+                if (winnerType == PlayerType.O)
+                {
+                    winnerName = lobby.Oplayer.Name;
+                }
+                else
+                {
+                    winnerName = lobby.Xplayer.Name;
+                }
+                setCellsDisabled();
+                MessageBox.Show($"Победил {winnerName}");
+                //_lobby.GameFinished?.Invoke(this, winnerName);
+            };
         }
 
 
@@ -154,9 +172,10 @@ namespace CrestiUI
         }
 
 
-        //private void GameWindow_OnClosing(object sender, CancelEventArgs e)
-        //{
-        //    _user.Disconnect();
-        //}
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _lobby.WriteToChat(MessageTextBox.Text);
+            MessageTextBox.Text = string.Empty;
+        }
     }
 }

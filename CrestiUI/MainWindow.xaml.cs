@@ -9,9 +9,6 @@ namespace CrestiUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Board game;
-
-
         public MainWindow()
         {
             InitializeComponent();

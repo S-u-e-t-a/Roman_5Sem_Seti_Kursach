@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 
 namespace CRESTI
 {
@@ -11,16 +11,18 @@ namespace CRESTI
     public class Board
     {
         private const int boardSize = 3;
+
+
+        public EventHandler GameFinished;
         private int countOfMarkedCells;
+
+        public Cell[,] Cells { get; private set; }
 
 
         public GameState State { get; private set; }
 
 
         public PlayerType Turn { get; private set; }
-
-
-        public Cell[,] Cells { get; private set; }
 
 
         public PlayerType? Winner { get; private set; }
@@ -43,18 +45,6 @@ namespace CRESTI
         }
 
 
-        private void cleanBoard()
-        {
-            for (var i = 0; i < 3; i++)
-            {
-                for (var j = 0; j < 3; j++)
-                {
-                    Cells[i, j] = new Cell();
-                }
-            }
-        }
-
-
         public void Mark(int row, int col)
         {
             if (isCellValid(row, col) && (State == GameState.InProgress))
@@ -65,6 +55,7 @@ namespace CRESTI
                 {
                     Winner = Turn;
                     State = GameState.Finished;
+                    GameFinished?.Invoke(this, null);
                 }
                 else
                 {
@@ -74,6 +65,37 @@ namespace CRESTI
                     }
 
                     changeTurn();
+                }
+            }
+        }
+
+
+        private bool isPlayerWin(PlayerType playerType, int curRow, int curCol)
+        {
+            return ((Cells[curRow, 0].Value == playerType)
+                    && (Cells[curRow, 1].Value == playerType)
+                    && (Cells[curRow, 2].Value == playerType))
+                   || ((Cells[0, curCol].Value == playerType)
+                       && (Cells[1, curCol].Value == playerType)
+                       && (Cells[2, curCol].Value == playerType))
+                   || ((curRow == curCol)
+                       && (Cells[0, 0].Value == playerType)
+                       && (Cells[1, 1].Value == playerType)
+                       && (Cells[2, 2].Value == playerType))
+                   || ((curRow + curCol == 2)
+                       && (Cells[0, 2].Value == playerType)
+                       && (Cells[1, 1].Value == playerType)
+                       && (Cells[2, 0].Value == playerType));
+        }
+
+
+        private void cleanBoard()
+        {
+            for (var i = 0; i < 3; i++)
+            {
+                for (var j = 0; j < 3; j++)
+                {
+                    Cells[i, j] = new Cell();
                 }
             }
         }
@@ -107,40 +129,6 @@ namespace CRESTI
         private bool isCellMarked(int row, int col)
         {
             return Cells[row, col].Value != null;
-        }
-
-
-        public void printCell()
-        {
-            for (var i = 0; i < 3; i++)
-            {
-                for (var j = 0; j < 3; j++)
-                {
-                    Trace.Write(Cells[i, j].Value);
-                    Trace.Write(" ");
-                }
-
-                Trace.WriteLine(null);
-            }
-        }
-
-
-        public bool isPlayerWin(PlayerType playerType, int curRow, int curCol)
-        {
-            return ((Cells[curRow, 0].Value == playerType)
-                    && (Cells[curRow, 1].Value == playerType)
-                    && (Cells[curRow, 2].Value == playerType))
-                   || ((Cells[0, curCol].Value == playerType)
-                       && (Cells[1, curCol].Value == playerType)
-                       && (Cells[2, curCol].Value == playerType))
-                   || ((curRow == curCol)
-                       && (Cells[0, 0].Value == playerType)
-                       && (Cells[1, 1].Value == playerType)
-                       && (Cells[2, 2].Value == playerType))
-                   || ((curRow + curCol == 2)
-                       && (Cells[0, 2].Value == playerType)
-                       && (Cells[1, 1].Value == playerType)
-                       && (Cells[2, 0].Value == playerType));
         }
     }
 }

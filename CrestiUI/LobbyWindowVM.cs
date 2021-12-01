@@ -136,6 +136,7 @@ namespace CrestiUI
                 }
             };
             LocalLobby.WritedToChat += (sender, args, username, message) => { OnPropertyChanged(nameof(Chat)); };
+            //LocalLobby.GameFinished += (sender, winnerName) => { MessageBox.Show($"Побдил {winnerName}"); };
         }
     }
 }

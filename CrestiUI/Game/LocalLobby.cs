@@ -22,12 +22,17 @@ namespace CrestiUI.Game
     {
         public delegate void CellMarkedHandler(object sender, EventArgs e, int row, int col);
 
+        //public delegate void GameFinishedHandler(object sender, string winnerName);
+
         public delegate void WritedToChatHandler(object sender, EventArgs e, string username, string message);
 
         public CellMarkedHandler CellMarked;
         public EventHandler PlayerUpdatedHandler;
         public EventHandler UsersUpdatedHandler;
+
         public EventHandler<int[]> GameStarted;
+
+        //public GameFinishedHandler GameFinished;
         public List<LocalUser> users;
         public string ChatHistory;
         public WritedToChatHandler WritedToChat;
@@ -89,6 +94,42 @@ namespace CrestiUI.Game
         }
 
 
+        public void MakeLocalUserPlayer(PlayerType playerType)
+        {
+            var request = new Request("POST", RequestCommands.POSTPlayerBecomePlayer, new Dictionary<string, string>
+            {
+                {"PlayerType", JsonSerializer.Serialize(playerType)},
+                {"LocalUser", JsonSerializer.Serialize(_user)}
+            });
+            SendMessageToServer(request.ToJsonString());
+        }
+
+
+        public void SendToServerGameStart()
+        {
+            LobbyState = LobbyState.GameStarted;
+            var request = new Request("POST", RequestCommands.POSTGameStart, null);
+            tcpClient.WriteLine(request.ToJsonString());
+        }
+
+
+        public void WriteToChat(string message)
+        {
+            var request = new Request("POST", RequestCommands.PostUserWriteToChat, new Dictionary<string, string>
+            {
+                {"UserName", _user.Name},
+                {"Message", message}
+            });
+            tcpClient.WriteLine(request.ToJsonString());
+        }
+
+
+        public void SendMessageToServer(string message)
+        {
+            tcpClient.WriteLine(message);
+        }
+
+
         protected void connectToServerLobby(string ip, int port)
         {
             tcpClient.Connect(ip, port);
@@ -130,17 +171,6 @@ namespace CrestiUI.Game
                     }
                 }
             }
-        }
-
-
-        public void MakeLocalUserPlayer(PlayerType playerType)
-        {
-            var request = new Request("POST", RequestCommands.POSTPlayerBecomePlayer, new Dictionary<string, string>
-            {
-                {"PlayerType", JsonSerializer.Serialize(playerType)},
-                {"LocalUser", JsonSerializer.Serialize(_user)}
-            });
-            SendMessageToServer(request.ToJsonString());
         }
 
 
@@ -194,30 +224,6 @@ namespace CrestiUI.Game
                     PlayerUpdatedHandler(this, null);
                 }
             }
-        }
-
-
-        public void SendToServerGameStart()
-        {
-            var request = new Request("POST", RequestCommands.POSTGameStart, null);
-            tcpClient.WriteLine(request.ToJsonString());
-        }
-
-
-        public void WriteToChat(string message)
-        {
-            var request = new Request("POST", RequestCommands.PostUserWriteToChat, new Dictionary<string, string>
-            {
-                {"UserName", _user.Name},
-                {"Message", message}
-            });
-            tcpClient.WriteLine(request.ToJsonString());
-        }
-
-
-        public void SendMessageToServer(string message)
-        {
-            tcpClient.WriteLine(message);
         }
 
 
