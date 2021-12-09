@@ -10,6 +10,7 @@
         POSTGameStart,
         POSTClientsMustUpdateUsers,
         POSTSendLobbyUsers,
-        POSTPlayerBecomePlayer
+        POSTPlayerBecomePlayer,
+        POSTRestartGame
     }
 }

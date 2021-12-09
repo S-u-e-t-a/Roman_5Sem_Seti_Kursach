@@ -27,9 +27,9 @@ namespace CrestiUI.Game
         public delegate void WritedToChatHandler(object sender, EventArgs e, string username, string message);
 
         public CellMarkedHandler CellMarked;
+        public EventHandler GameRestartedHandler;
         public EventHandler PlayerUpdatedHandler;
         public EventHandler UsersUpdatedHandler;
-
         public EventHandler<int[]> GameStarted;
 
         //public GameFinishedHandler GameFinished;
@@ -40,8 +40,9 @@ namespace CrestiUI.Game
         protected LocalUser _user;
         protected SimpleTcpClient tcpClient;
 
-        public virtual IEnumerable<string> LocalIps { get; private set; }
+        public bool IsServer { get; protected set; }
 
+        public virtual IEnumerable<string> LocalIps { get; private set; }
 
         public int PlayerCount
         {
@@ -222,6 +223,11 @@ namespace CrestiUI.Game
                     }
 
                     PlayerUpdatedHandler(this, null);
+                }
+
+                if (response.Name == "RestartGame")
+                {
+                    GameRestartedHandler(this, null);
                 }
             }
         }

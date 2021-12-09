@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800"
-        >
+        Title="GameWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -25,17 +24,19 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
-            <TextBox x:Name="ChatBlock" ></TextBox>
+            <TextBox x:Name="ChatBlock" />
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
-                <TextBox  x:Name="MessageTextBox" />
+                <TextBox x:Name="MessageTextBox" />
                 <Button Grid.Column="1" Margin="7" Click="Button_Click">Отправить</Button>
             </Grid>
         </Grid>
+        <Button x:Name="RestartButton" Content="Начать заново" HorizontalAlignment="Left" Margin="265,394,0,0"
+                VerticalAlignment="Top" Click="Button_Click_1" />
     </Grid>
 </Window>

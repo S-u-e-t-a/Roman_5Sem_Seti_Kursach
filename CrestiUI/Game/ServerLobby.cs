@@ -33,9 +33,20 @@ namespace CrestiUI.Game
             LobbyState = LobbyState.SearchingForPlayers;
             tcpClient = new SimpleTcpClient();
             tcpClient.DelimiterDataReceived += processMessage;
-
+            IsServer = true;
             connectToServerLobby("localhost", port);
             syncWithServer();
+        }
+
+
+        public IEnumerable<string> getIps()
+        {
+            return server.GetIPAddresses().Where(a => a.AddressFamily == AddressFamily.InterNetwork).Select(a => a.ToString());
+        }
+
+
+        public void StartGame()
+        {
         }
 
 
@@ -120,19 +131,14 @@ namespace CrestiUI.Game
                         var response = new Response("UserWritedToChat", request.Args);
                         server.BroadcastLine(response.ToJsonString());
                     }
+
+                    if (request.FuncName == RequestCommands.POSTRestartGame.ToString())
+                    {
+                        var response = new Response("RestartGame", null);
+                        server.BroadcastLine(response.ToJsonString());
+                    }
                 }
             }
-        }
-
-
-        public IEnumerable<string> getIps()
-        {
-            return server.GetIPAddresses().Where(a => a.AddressFamily == AddressFamily.InterNetwork).Select(a => a.ToString());
-        }
-
-
-        public void StartGame()
-        {
         }
     }
 }

@@ -85,13 +85,35 @@ namespace CrestiUI
                 isUserTurn = true;
             }
 
+            if (!_lobby.IsServer)
+            {
+                RestartButton.Visibility = Visibility.Hidden;
+            }
+
             _lobby.CellMarked += (sender, args, row, col) =>
             {
                 markCell(row, col);
                 checkWin();
             };
             _lobby.WritedToChat += (sender, args, username, message) => Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
+            _lobby.GameRestartedHandler += (sender, args) => restartGame();
             Dispatcher.Invoke(() => ChatBlock.Text = _lobby.ChatHistory);
+        }
+
+
+        private void restartGame()
+        {
+            _game.Restart();
+            if (_lobby.isXPlayer())
+            {
+                isUserTurn = true;
+            }
+            else
+            {
+                isUserTurn = false;
+            }
+
+            updateBoard();
         }
 
 
@@ -196,6 +218,13 @@ namespace CrestiUI
         {
             _lobby.WriteToChat(MessageTextBox.Text);
             MessageTextBox.Text = string.Empty;
+        }
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var request = new Request("POST", RequestCommands.POSTRestartGame, null);
+            _lobby.SendMessageToServer(request.ToJsonString());
         }
     }
 }
